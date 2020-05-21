@@ -1,0 +1,30 @@
+{
+  "name": "rainbow-flame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "start": "node dist/Bot.js",
+    "start:dev": "ts-node-dev --poll -- ./src/Bot.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WovenCoast/rainbow-flame.git"
+  },
+  "keywords": [
+    "RainbowFlame"
+  ],
+  "author": "WovenCoast <github@mail.wovencoast.me>, TheSilentDefender",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WovenCoast/rainbow-flame/issues"
+  },
+  "homepage": "https://github.com/WovenCoast/rainbow-flame#readme",
+  "dependencies": {
+    "@types/node": "^14.0.4",
+    "discord-akairo": "^8.0.0",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0"
+  }
+}
