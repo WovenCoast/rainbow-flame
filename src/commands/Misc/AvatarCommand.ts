@@ -1,9 +1,8 @@
 import { Command } from "discord-akairo";
 import { Message, GuildMember, MessageEmbed, ImageSize } from "discord.js";
-import { convertMs } from "../../Utils";
 import { colors } from "../../Config";
 
-export default class PingCommand extends Command {
+export default class AvatarCommand extends Command {
   public constructor() {
     super("avatar", {
       aliases: ["avatar", "av", "avtr", "picture"],
