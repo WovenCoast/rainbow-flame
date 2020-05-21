@@ -5,7 +5,7 @@ import { convertMs } from "../../Utils";
 export default class PingCommand extends Command {
   public constructor() {
     super("ping", {
-      aliases: ["ping", "pong"],
+      aliases: ["ping", "pong", "p"],
       category: "Misc",
       description: {
         content: "Check the latency from the bot to the discord api",
