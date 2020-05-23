@@ -24,9 +24,9 @@ export default class GiveawayCommand extends Command {
           type: (msg: Message, str: string) => (str ? Number(ms(str)) : null),
           prompt: {
             start: (msg: Message) =>
-              `${msg.author}, you need to provide a time duration for the giveaway!`,
+              `you need to provide a time duration for the giveaway!`,
             retry: (msg: Message) =>
-              `${msg.author}, you need to provide a valid time duration for the giveaway!`,
+              `you need to provide a valid time duration for the giveaway!`,
           },
         },
         {

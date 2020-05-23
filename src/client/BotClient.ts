@@ -2,8 +2,9 @@ import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { Message } from "discord.js";
 import { join } from "path";
 import { prefix, owners, dbName } from "../Config";
-import { Connection } from "typeorm";
+import { Connection, getConnectionManager } from "typeorm";
 import Database from "../structures/Database";
+import { exec } from "../Utils";
 
 declare module "discord-akairo" {
   interface AkairoClient {
@@ -35,9 +36,9 @@ export default class BotClient extends AkairoClient {
     argumentDefaults: {
       prompt: {
         modifyStart: (_: Message, str: string): string =>
-          `${str}\n\nType \`cancel\` to cancel the command...`,
+          `${_.author}, ${str}\n\nType \`cancel\` to cancel the command...`,
         modifyRetry: (_: Message, str: string): string =>
-          `${str}\n\nType \`cancel\` to cancel the command...`,
+          `${_.author}, ${str}\n\nType \`cancel\` to cancel the command...`,
         timeout: "You took too long! The command has been cancelled...",
         ended:
           "You exceeded the maximum amount of tries, this command has been cancelled...",

@@ -1,19 +1,28 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("giveaway")
-export class Giveaway {
+@Entity("mute")
+export class Mute {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ type: "varchar", length: 22 })
-  channel: string;
+  guild: string;
 
   @Column({ type: "varchar", length: 22 })
-  message: string;
+  user: string;
+
+  @Column({ type: "varchar", length: 22 })
+  moderator: string;
+
+  @Column({ type: "integer" })
+  time: number;
 
   @Column({ type: "integer" })
   end: number;
 
   @Column({ type: "text" })
-  item: string;
+  reason: string;
+
+  @Column({ type: "boolean" })
+  active: boolean;
 }

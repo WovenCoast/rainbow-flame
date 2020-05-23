@@ -5,16 +5,16 @@ export function randomValue(min: number, max: number): number {
 }
 export function convertMs(ms: number): string {
   const showWith0 = (value) => (value < 10 ? `0${value}` : value);
-  const days = showWith0(Math.floor((ms / (1000 * 60 * 60 * 24)) % 60));
-  const hours = showWith0(Math.floor((ms / (1000 * 60 * 60)) % 24));
-  const minutes = showWith0(Math.floor((ms / (1000 * 60)) % 60));
-  const seconds = showWith0(Math.floor((ms / 1000) % 60));
-  if (parseInt(days)) return `${days}d`;
-  if (parseInt(hours)) return `${hours}h`;
-  if (parseInt(minutes)) return `${minutes}min`;
-  if (parseInt(seconds)) return `${seconds}s`;
-  if (Math.floor(ms)) return `${ms}ms`;
-  return ms + "ms";
+  const days = Math.floor((ms / (1000 * 60 * 60 * 24)) % 60);
+  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  const seconds = Math.floor((ms / 1000) % 60);
+  if (days !== 0) return `${showWith0(days)}d`;
+  if (hours !== 0) return `${showWith0(hours)}h`;
+  if (minutes !== 0) return `${showWith0(minutes)}min`;
+  if (seconds !== 0) return `${showWith0(seconds)}s`;
+  if (ms >= 1) return `${showWith0(Math.ceil(ms))}ms`;
+  return `${(ms * 1000).toFixed(2)}μs`;
 }
 export function convertBytes(bytes: number): string {
   const decimals = 2;

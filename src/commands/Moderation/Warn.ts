@@ -12,7 +12,10 @@ export default class WarnCommand extends Command {
       description: {
         content: "Warn a member in this server",
         usage: "warn <member> <reason>",
-        examples: ["warn FlameXode Stopped my music"],
+        examples: [
+          "warn FlameXode Stopped my music",
+          "warn 502446928303226890 lol",
+        ],
       },
       ratelimit: 3,
       userPermissions: ["MANAGE_MESSAGES"],
@@ -21,10 +24,8 @@ export default class WarnCommand extends Command {
           id: "member",
           type: "member",
           prompt: {
-            start: (msg: Message) =>
-              `${msg.author}, please provide a member to warn`,
-            retry: (msg: Message) =>
-              `${msg.author}, please provide a valid member to warn`,
+            start: (msg: Message) => `please provide a member to warn`,
+            retry: (msg: Message) => `please provide a valid member to warn`,
           },
         },
         {
