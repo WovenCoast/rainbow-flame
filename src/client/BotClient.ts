@@ -4,7 +4,7 @@ import { prefix, owners, dbName, lavalink, userID } from "../Config";
 import { Connection } from "typeorm";
 import Database from "../structures/Database";
 import Guild from "../structures/discord.js/Guild";
-Guild;
+Guild; // TypeScript removes unused imports when compiling. Don't remove this line.
 import { Message } from "discord.js";
 import { Manager } from "@lavacord/discord.js";
 

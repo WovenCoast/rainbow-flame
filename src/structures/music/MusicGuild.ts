@@ -95,4 +95,24 @@ export default class Music {
       return;
     }
   }
+
+  async pause() {
+    return await this.player.pause(!this.player.paused);
+  }
+
+  get duration() {
+    return this.player.state.position;
+  }
+
+  set duration(pos: number) {
+    this.player.seek(pos);
+  }
+
+  get volume() {
+    return this.player.state.volume;
+  }
+
+  set volume(v: number) {
+    this.player.volume(v);
+  }
 }
