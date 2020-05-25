@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "start": "node dist/Bot.js",
-    "start:dev": "ts-node-dev --poll -- ./src/Bot.ts"
+    "start:dev": "ts-node-dev --poll -- ./src/Bot.ts",
+    "start:lavalink": "cd ./lavalink && ./lavalink.sh"
   },
   "repository": {
     "type": "git",

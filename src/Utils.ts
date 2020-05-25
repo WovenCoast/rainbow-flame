@@ -106,7 +106,7 @@ export async function getSongs(
   manager: Manager,
   search: string
 ): Promise<Object> {
-  const node: LavalinkNode = manager.idealNodes[0];
+  const node: LavalinkNode = manager.nodes.get("main");
   const params = new URLSearchParams();
   params.append("identifier", search);
 

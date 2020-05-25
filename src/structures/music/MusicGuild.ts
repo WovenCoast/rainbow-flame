@@ -47,7 +47,10 @@ export default class Music {
     this.player = await this.client.manager.join({
       channel: voiceChannel.id,
       guild: voiceChannel.guild.id,
-      node: this.client.manager.idealNodes[0].id,
+      node: [
+        ...this.client.manager.idealNodes,
+        this.client.manager.nodes.get("main"),
+      ][0].id,
     });
     this.songs.push(song);
     this.playHead = this.songs.indexOf(song);

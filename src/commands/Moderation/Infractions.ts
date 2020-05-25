@@ -3,6 +3,7 @@ import { Message, GuildMember, User, MessageEmbed } from "discord.js";
 import { Repository } from "typeorm";
 
 import { Warn } from "../../models/Warn";
+import { Mute } from "../../models/Mute";
 import { colors } from "../../Config";
 
 export default class InfractionsCommand extends Command {
@@ -33,18 +34,22 @@ export default class InfractionsCommand extends Command {
   ): Promise<Message> {
     const warnRepo: Repository<Warn> = this.client.db.getRepository(Warn);
     const warns: Warn[] = await warnRepo.find({
-      user: member.id,
+      user: member.user.id,
       guild: message.guild.id,
     });
     if (!warns.length)
       return message.util.send(
         `**${member.user.tag}**, you've been a good boi! No infractions found`
       );
-
+    const muteRepo: Repository<Mute> = this.client.db.getRepository(Mute);
+    const mutes: Mute[] = await muteRepo.find({
+      user: member.user.id,
+      guild: message.guild.id,
+    });
     const infractions = await Promise.all(
-      [...warns]
+      [...warns, ...mutes]
         .sort((a, b) => a.time - b.time)
-        .map(async (v, i: number) => {
+        .map(async (v: Warn | Mute, i: number) => {
           const mod: User = await this.client.users
             .fetch(v.moderator)
             .catch(() => null);
@@ -52,7 +57,8 @@ export default class InfractionsCommand extends Command {
             return {
               index: i + 1,
               moderator: mod.tag,
-              time: v.time,
+              //@ts-ignore
+              time: v.end ? v.end : v.time,
               reason: v.reason,
             };
         })

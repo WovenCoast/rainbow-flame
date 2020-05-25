@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { Mute } from "../../models/Mute";
 import MuteManager from "../../structures/moderation/MuteManager";
 
-export default class UnunmuteCommand extends Command {
+export default class UnmuteCommand extends Command {
   public constructor() {
     super("unmute", {
       aliases: ["unmute"],
