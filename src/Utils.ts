@@ -1,4 +1,8 @@
 import childProcess from "child_process";
+import axios from "axios";
+import { URLSearchParams } from "url";
+import { LavalinkNode } from "@lavacord/discord.js";
+import { Manager } from "lavacord";
 
 export function randomValue(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -97,4 +101,37 @@ export function shuffle<K extends any>(array: Array<K>): Array<K> {
 
 export function chunk(length: number, string: string): Array<string> {
   return string.match(new RegExp(`(.|[\\r\\n]){1,${length}}`, "g"));
+}
+export async function getSongs(
+  manager: Manager,
+  search: string
+): Promise<Object> {
+  const node: LavalinkNode = manager.idealNodes[0];
+  const params = new URLSearchParams();
+  params.append("identifier", search);
+
+  return axios
+    .get(`http://${node.host}:${node.port}/loadtracks?${params}`, {
+      headers: { Authorization: node.password },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+}
+export async function getBase64(url: string): Promise<Object> {
+  try {
+    var result = await axios
+      .get(url, {
+        responseType: "arraybuffer",
+      })
+      .then((response) =>
+        Buffer.from(response.data, "binary").toString("base64")
+      );
+
+    return { success: true, data: result };
+  } catch (e) {
+    return { success: false, error: e };
+  }
 }

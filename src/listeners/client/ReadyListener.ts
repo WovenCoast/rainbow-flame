@@ -14,6 +14,11 @@ export default class ReadyListener extends Listener {
   }
 
   public async exec(): Promise<void> {
+    await this.client.manager.connect();
+    this.client.manager.on("error", (error, node) =>
+      console.error(error, node)
+    );
+
     const giveawayRepo: Repository<Giveaway> = this.client.db.getRepository(
       Giveaway
     );

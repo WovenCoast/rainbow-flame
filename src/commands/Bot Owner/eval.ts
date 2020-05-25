@@ -1,6 +1,21 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { sanitize, convertMs } from "../../Utils";
+import {
+  chunk,
+  convertBytes,
+  convertDuration,
+  convertMs,
+  delay,
+  exec,
+  getBase64,
+  getRandom,
+  getSongs,
+  pluralify,
+  randomValue,
+  sanitize,
+  shuffle,
+  titleCase,
+} from "../../Utils";
 import { colors } from "../../Config";
 import { performance } from "perf_hooks";
 import { inspect } from "util";
@@ -43,7 +58,7 @@ export default class EvalCommand extends Command {
       if (result instanceof Promise) {
         result = await result;
       }
-      if (typeof result != "string") {
+      if (typeof result !== "string") {
         result = inspect(result);
       }
       if (result.length > 1024) {

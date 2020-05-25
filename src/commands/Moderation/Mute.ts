@@ -43,16 +43,19 @@ export default class MuteCommand extends Command {
   ): Promise<Message> {
     const muteRepo: Repository<Mute> = this.client.db.getRepository(Mute);
     if (
-      member.roles.highest.position <= message.member.roles.highest.position &&
-      member.user.id !== message.guild.ownerID
+      (member.user.id === message.guild.ownerID
+        ? Infinity
+        : member.roles.highest.position) <=
+      message.member.roles.highest.position
     )
       return message.util.reply(
         "the member you tried to mute has more permissions than you!"
       );
     if (
-      member.roles.highest.position <=
-        message.guild.me.roles.highest.position &&
-      member.user.id !== message.guild.ownerID
+      (member.user.id === message.guild.ownerID
+        ? Infinity
+        : member.roles.highest.position) <=
+      message.guild.me.roles.highest.position
     )
       return message.util.reply(
         "you're trying to mute a member that I can't mute!"
@@ -74,11 +77,13 @@ export default class MuteCommand extends Command {
         reason,
         member,
       });
+      return message.util.send(
+        `**${member.user.tag}** has been muted by **${message.author.tag}** for **${reason}**!`
+      );
     } catch (e) {
-      message.util.reply(`\`\`\`${e.stack}\`\`\``);
+      message.util.reply(
+        `Something went terribly wrong:- \`\`\`${e.stack}\`\`\``
+      );
     }
-    return message.util.send(
-      `**${member.user.tag}** has been muted by **${message.author.tag}** for **${reason}**!`
-    );
   }
 }

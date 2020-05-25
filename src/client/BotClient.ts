@@ -1,16 +1,19 @@
 import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
-import { Message } from "discord.js";
 import { join } from "path";
-import { prefix, owners, dbName } from "../Config";
-import { Connection, getConnectionManager } from "typeorm";
+import { prefix, owners, dbName, lavalink, userID } from "../Config";
+import { Connection } from "typeorm";
 import Database from "../structures/Database";
-import { exec } from "../Utils";
+import Guild from "../structures/discord.js/Guild";
+Guild;
+import { Message } from "discord.js";
+import { Manager } from "@lavacord/discord.js";
 
 declare module "discord-akairo" {
   interface AkairoClient {
     commandHandler: CommandHandler;
     listenerHandler: ListenerHandler;
     db: Connection;
+    manager: Manager;
   }
 }
 
@@ -22,6 +25,7 @@ interface BotOptions {
 export default class BotClient extends AkairoClient {
   public config: BotOptions;
   public db: Connection;
+  public manager: Manager = new Manager(this, [lavalink]);
   public listenerHandler: ListenerHandler = new ListenerHandler(this, {
     directory: join(__dirname, "../listeners"),
   });
@@ -76,6 +80,6 @@ export default class BotClient extends AkairoClient {
 
   public async start(): Promise<string> {
     await this._init();
-    return this.login(this.token);
+    return await this.login(this.token);
   }
 }

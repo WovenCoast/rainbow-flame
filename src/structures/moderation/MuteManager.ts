@@ -31,12 +31,14 @@ export default {
       });
       await Promise.all(
         member.guild.channels.cache.map(async (channel) => {
-          return await channel.overwritePermissions([
-            {
-              id: muteRole,
-              deny: ["ADD_REACTIONS", "SEND_MESSAGES", "SPEAK"],
-            },
-          ]);
+          return await channel
+            .overwritePermissions([
+              {
+                id: muteRole,
+                deny: ["ADD_REACTIONS", "SEND_MESSAGES", "SPEAK"],
+              },
+            ])
+            .catch((e) => null);
         })
       );
     }

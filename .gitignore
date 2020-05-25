@@ -105,3 +105,6 @@ dist
 
 # Database file
 db.sqlite
+
+# Lavalink config file
+lavalink/application.yaml
