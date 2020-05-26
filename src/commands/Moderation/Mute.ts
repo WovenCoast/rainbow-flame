@@ -45,7 +45,7 @@ export default class MuteCommand extends Command {
     if (
       (member.user.id === message.guild.ownerID
         ? Infinity
-        : member.roles.highest.position) <=
+        : member.roles.highest.position) >=
       message.member.roles.highest.position
     )
       return message.util.reply(
@@ -54,7 +54,7 @@ export default class MuteCommand extends Command {
     if (
       (member.user.id === message.guild.ownerID
         ? Infinity
-        : member.roles.highest.position) <=
+        : member.roles.highest.position) >=
       message.guild.me.roles.highest.position
     )
       return message.util.reply(

@@ -2,7 +2,7 @@ import childProcess from "child_process";
 import axios from "axios";
 import { URLSearchParams } from "url";
 import { LavalinkNode } from "@lavacord/discord.js";
-import { Manager } from "lavacord";
+import { Manager, TrackResponse } from "lavacord";
 
 export function randomValue(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -105,7 +105,7 @@ export function chunk(length: number, string: string): Array<string> {
 export async function getSongs(
   manager: Manager,
   search: string
-): Promise<Object> {
+): Promise<TrackResponse> {
   const node: LavalinkNode = manager.nodes.get("main");
   const params = new URLSearchParams();
   params.append("identifier", search);

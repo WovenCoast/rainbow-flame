@@ -1,6 +1,11 @@
 import { Guild, VoiceChannel, TextChannel } from "discord.js";
 import { AkairoClient } from "discord-akairo";
-import { TrackData, Player, LavalinkEvent } from "lavacord";
+import {
+  TrackData,
+  Player,
+  LavalinkEvent,
+  PlayerEqualizerBand,
+} from "lavacord";
 
 enum Loop {
   "one",
@@ -22,9 +27,9 @@ export default class Music {
     this.guild = guild;
   }
 
-  async stopPlaying(guild: Guild): Promise<boolean> {
+  async stopPlaying(): Promise<boolean> {
     if (!this.playing) return false;
-    await this.client.manager.leave(guild.id);
+    await this.client.manager.leave(this.guild.id);
     this.playing = false;
     this.textChannel = null;
     this.voiceChannel = null;
@@ -40,7 +45,8 @@ export default class Music {
     song: TrackData
   ): Promise<void> {
     if (this.playing) {
-      return await this.addToQueue(song);
+      await this.addToQueue(song);
+      return;
     }
     this.textChannel = textChannel;
     this.voiceChannel = voiceChannel;
@@ -63,6 +69,14 @@ export default class Music {
       }** by **${this.songs[this.playHead].info.author}**`
     );
     this.player.on("end", (data: LavalinkEvent) => {
+      if (data.reason === "LOAD_FAILED")
+        return this.player.play(this.songs[this.playHead].track);
+      if (this.voiceChannel.members.filter((m) => !m.voice.deaf).size <= 1) {
+        this.textChannel.send(
+          ":octagonal_sign: No one is in the voice channel to listen to me, quitting voice channel."
+        );
+        return this.stopPlaying();
+      }
       if (data.reason === "REPLACED") return;
       switch (this.loop) {
         case Loop.all:
@@ -85,17 +99,21 @@ export default class Music {
     });
   }
 
-  async addToQueue(song: TrackData): Promise<void> {
-    this.songs.push(song);
+  async addToQueue(song: TrackData): Promise<boolean> {
     try {
+      if (this.songs.indexOf(song) !== -1) {
+        this.textChannel.send(
+          `:octagonal_sign: That song is already in the queue!`
+        );
+        return false;
+      }
+      this.songs.push(song);
       this.textChannel.send(
-        `:white_check_mark: Successfully added **${
-          this.songs[this.playHead].info.title
-        }** by **${this.songs[this.playHead].info.author}** to the queue!`
+        `:white_check_mark: Successfully added **${song.info.title}** by **${song.info.author}** to the queue!`
       );
-      return;
+      return true;
     } catch (e) {
-      return;
+      return false;
     }
   }
 
@@ -117,5 +135,13 @@ export default class Music {
 
   set volume(v: number) {
     this.player.volume(v);
+  }
+
+  get equalizer() {
+    return this.player.state.equalizer;
+  }
+
+  set equalizer(eq: PlayerEqualizerBand[]) {
+    this.player.equalizer(eq);
   }
 }
