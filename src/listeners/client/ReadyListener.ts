@@ -3,6 +3,8 @@ import { TextChannel, Message } from "discord.js";
 import { Repository } from "typeorm";
 import { Giveaway } from "../../models/Giveaway";
 import GiveawayManager from "../../structures/giveaways/GiveawayManager";
+import { FlameConsole } from "../../structures/Console";
+import { pluralify } from "../../Utils";
 
 export default class ReadyListener extends Listener {
   public constructor() {
@@ -23,7 +25,9 @@ export default class ReadyListener extends Listener {
       Giveaway
     );
 
-    console.log(`${this.client.user.tag} is online and ready!`);
+    (console as FlameConsole).rainbow(
+      `${this.client.user.tag} is online and ready!`
+    );
 
     const giveaways: Giveaway[] = await giveawayRepo.find();
     giveaways

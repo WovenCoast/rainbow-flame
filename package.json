@@ -26,6 +26,7 @@
     "@lavacord/discord.js": "0.0.7",
     "@types/node": "^14.0.4",
     "axios": "^0.19.2",
+    "chalk": "^4.0.0",
     "discord-akairo": "^8.0.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
@@ -35,6 +36,6 @@
     "sqlite": "^4.0.7",
     "sqlite3": "^4.2.0",
     "typeorm": "^0.2.25",
-    "uninstall": "0.0.0"
+    "vultrex.api": "^2.0.1"
   }
 }

@@ -57,6 +57,22 @@ export default class PlayCommand extends Command {
   ): Promise<any> {
     if (!message.member.voice)
       return message.util.reply("you must be connected to a voice channel!");
+    if (
+      !message.member.voice.channel
+        .permissionsFor(message.guild.me)
+        .has("CONNECT")
+    )
+      return message.util.reply(
+        "you must be connected to a voice channel that I can join!"
+      );
+    if (
+      !message.member.voice.channel
+        .permissionsFor(message.guild.me)
+        .has("SPEAK")
+    )
+      return message.util.reply(
+        "you must be connected to a voice channel that I can speak in!"
+      );
     const res: TrackResponse = await getSongs(
       this.client.manager,
       `${search.startsWith("http") ? "" : searchType + ":"}${search}`
@@ -64,7 +80,10 @@ export default class PlayCommand extends Command {
     if (res.loadType === LoadType.NO_MATCHES)
       return message.util.send(":shrug: Couldn't find any song with that name");
     if (res.loadType === LoadType.LOAD_FAILED) {
-      return message.util.send(":shrug: Something went wrong on our side.");
+      return message.util.send(
+        //@ts-ignore
+        `:x: Something went wrong on our side, \`${res.exception.message}\``
+      );
     }
     if (res.loadType === LoadType.PLAYLIST_LOADED) {
       const songs: TrackData[] = res.tracks;
@@ -116,13 +135,16 @@ export default class PlayCommand extends Command {
       const collector = message.channel.createMessageCollector(
         (msg: Message) =>
           msg.author.id === message.author.id &&
-          [...Object.keys(songs), "cancel"].includes(msg.content.toLowerCase()),
+          [1, 2, 3, 4, 5, "cancel"]
+            .map((e) => `${e}`)
+            .includes(msg.content.toLowerCase()),
         { max: 1, time: 6e4 }
       );
       collector.on("collect", async (msg: Message) => {
         if (msg.content.toLowerCase() === "cancel")
           return message.channel.send(`${msg.author}, cancelled.`);
-        const song = res.tracks[0];
+        const song =
+          songs[(new Number(msg.content.toLowerCase().trim()) as number) - 1];
         await (message.guild as FlameGuild).music.startPlaying(
           message.member.voice.channel,
           message.channel as TextChannel,

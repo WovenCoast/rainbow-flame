@@ -6,15 +6,15 @@ import { Warn } from "../../models/Warn";
 import { Mute } from "../../models/Mute";
 import { colors } from "../../Config";
 
-export default class InfractionsCommand extends Command {
+export default class ModlogsCommand extends Command {
   public constructor() {
-    super("infractions", {
-      aliases: ["infractions"],
+    super("modlogs", {
+      aliases: ["modlogs", "modlog", "infractions"],
       category: "Moderation",
       description: {
-        content: "Check the infractions of a member",
-        usage: "infractions <member>",
-        examples: ["infractions FlameXode"],
+        content: "Check the mod log of a member",
+        usage: "modlogs <member>",
+        examples: ["modlogs FlameXode"],
       },
       ratelimit: 3,
       userPermissions: ["MANAGE_MESSAGES"],
@@ -39,14 +39,14 @@ export default class InfractionsCommand extends Command {
     });
     if (!warns.length)
       return message.util.send(
-        `**${member.user.tag}**, you've been a good boi! No infractions found`
+        `**${member.user.tag}**, you've been a good boi! No mod logs found`
       );
     const muteRepo: Repository<Mute> = this.client.db.getRepository(Mute);
     const mutes: Mute[] = await muteRepo.find({
       user: member.user.id,
       guild: message.guild.id,
     });
-    const infractions = await Promise.all(
+    const logs = await Promise.all(
       [...warns, ...mutes]
         .sort((a, b) => a.time - b.time)
         .map(async (v: Warn | Mute, i: number) => {
@@ -69,11 +69,11 @@ export default class InfractionsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `Infractions | ${member.user.tag}`,
+          `Mod logs | ${member.user.tag}`,
           member.user.displayAvatarURL({ dynamic: true })
         )
         .setDescription(
-          infractions
+          logs
             .map(
               (v) =>
                 `\`#${v.index}\` Moderator: **${v.moderator}** | Reason: **${v.reason}**`

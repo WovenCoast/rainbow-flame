@@ -3,17 +3,22 @@ import { join } from "path";
 import { prefix, owners, dbName, lavalink, userID } from "../Config";
 import { Connection } from "typeorm";
 import Database from "../structures/Database";
-import Guild from "../structures/discord.js/Guild";
-Guild; // TypeScript removes unused imports when compiling. Don't remove this line.
+import { FlameGuild } from "../structures/discord.js/Guild";
+FlameGuild;
 import { Message } from "discord.js";
 import { Manager } from "@lavacord/discord.js";
+import { APIManager } from "../structures/APIManager";
+import { FlameConsole } from "../structures/Console";
+global.console = new FlameConsole(process.stdout, process.stderr, false);
 
 declare module "discord-akairo" {
   interface AkairoClient {
+    console: FlameConsole;
     commandHandler: CommandHandler;
     listenerHandler: ListenerHandler;
     db: Connection;
     manager: Manager;
+    apis: APIManager;
   }
 }
 
@@ -25,7 +30,13 @@ interface BotOptions {
 export default class BotClient extends AkairoClient {
   public config: BotOptions;
   public db: Connection;
+  public console: FlameConsole = new FlameConsole(
+    process.stdout,
+    process.stderr,
+    false
+  );
   public manager: Manager = new Manager(this, [lavalink]);
+  public apis: APIManager = new APIManager(this);
   public listenerHandler: ListenerHandler = new ListenerHandler(this, {
     directory: join(__dirname, "../listeners"),
   });

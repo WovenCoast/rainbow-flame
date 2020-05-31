@@ -48,11 +48,11 @@ export default class VolumeCommand extends Command {
       return message.util.reply(
         "you need to be alone or have `PRIORITY_SPEAKER` for this command to work!"
       );
+    if (newVolume > 1000)
+      return message.util.reply("you can set a maximum volume of 1000%!");
     (message.guild as FlameGuild).music.volume = newVolume;
     return message.util.send(
-      `:white_check_mark: Successfully set the volume to **${
-        (message.guild as FlameGuild).music.volume
-      }%**!`
+      `:white_check_mark: Successfully set the volume to **${newVolume}%**!`
     );
   }
 }

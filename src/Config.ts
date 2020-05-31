@@ -15,11 +15,13 @@ export let lavalink: LavalinkNodeOptions = {
   password: process.env.LAVALINK_SECRET,
 };
 interface Colors {
+  scheme: string[];
   info: string;
   error: string;
   success: string;
 }
 export let colors: Colors = {
+  scheme: ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#E2F0CB", "#B5EAD7", "#C7CEEA"],
   info: "#92DFF3",
   error: "#FF9AA2",
   success: "#B5EAD7",

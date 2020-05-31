@@ -51,7 +51,7 @@ export default class EvalCommand extends Command {
     message: Message,
     { input }: { input: string }
   ): Promise<any> {
-    const hastebin = "https://hasteb.in";
+    const hastebin = "https://hasteb.in/";
     const start = performance.now();
     try {
       let result: any = eval(input);
@@ -62,20 +62,13 @@ export default class EvalCommand extends Command {
         result = inspect(result);
       }
       if (result.length > 1024) {
-        result = await axios
-          .post(
-            `${hastebin}${hastebin.endsWith("/") ? "" : "/"}documents`,
-            result
-          )
-          .then(
-            (response) =>
-              `${hastebin}${hastebin.endsWith("/") ? "" : "/"}${
-                response.data.key
-              }.log`
-          )
-          .catch(console.error);
+        result = await this.client.apis.hastebin.post(
+          sanitize(result),
+          hastebin
+        );
       }
       const duration = performance.now() - start;
+      const isURL = result.startsWith("http");
       return message.util.send(
         new MessageEmbed()
           .setAuthor(
@@ -86,9 +79,7 @@ export default class EvalCommand extends Command {
           .addField("Input", `\`\`\`${input}\`\`\``)
           .addField(
             "Output",
-            `${result.startsWith("http") ? "" : "```"}${result}${
-              result.startsWith("http") ? "" : "```"
-            }`
+            `${isURL ? "" : "```"}${sanitize(result)}${isURL ? "" : "```"}`
           )
           .setFooter(`Evaluated in ${convertMs(duration)}`)
       );
