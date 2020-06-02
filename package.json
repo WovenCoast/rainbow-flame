@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc",
-    "start": "node dist/Bot.js",
-    "start:dev": "ts-node-dev --poll -- ./src/Bot.ts",
+    "build": "cd ./bot && rm -rf dist && tsc",
+    "start": "node bot/dist/Bot.js",
+    "start:dev": "ts-node-dev --poll -- ./bot/src/Bot.ts",
     "start:lavalink": "cd ./lavalink && ./lavalink.sh"
   },
   "repository": {

@@ -7,6 +7,7 @@ export default class ReloadCommand extends Command {
   constructor() {
     super("reload", {
       aliases: ["reload"],
+      category: "Bot Owner",
       description: {
         content: "Reload all the commands and events of this bot!",
         usage: "reload",

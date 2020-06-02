@@ -1,6 +1,6 @@
 import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { join } from "path";
-import { prefix, owners, dbName, lavalink, userID } from "../Config";
+import { prefix, owners, dbName, lavalink, userID, colors } from "../Config";
 import { Connection } from "typeorm";
 import Database from "../structures/Database";
 import { FlameGuild } from "../structures/discord.js/Guild";
@@ -9,6 +9,7 @@ import { Message } from "discord.js";
 import { Manager } from "@lavacord/discord.js";
 import { APIManager } from "../structures/APIManager";
 import { FlameConsole } from "../structures/Console";
+import { MessageEmbed } from "discord.js";
 global.console = new FlameConsole(process.stdout, process.stderr, false);
 
 declare module "discord-akairo" {
@@ -50,14 +51,35 @@ export default class BotClient extends AkairoClient {
     defaultCooldown: 6e4,
     argumentDefaults: {
       prompt: {
-        modifyStart: (_: Message, str: string): string =>
-          `${_.author}, ${str}\n\nType \`cancel\` to cancel the command...`,
-        modifyRetry: (_: Message, str: string): string =>
-          `${_.author}, ${str}\n\nType \`cancel\` to cancel the command...`,
-        timeout: "You took too long! The command has been cancelled...",
-        ended:
-          "You exceeded the maximum amount of tries, this command has been cancelled...",
-        cancel: "The command has been cancelled...",
+        modifyStart: (_: Message, str: string): MessageEmbed =>
+          new MessageEmbed()
+            .setColor(colors.primary)
+            .setDescription(
+              `${_.author}, ${str}\n\nType \`cancel\` to cancel the command...`
+            )
+            .setFooter("Type 'cancel' or wait until prompt ends at")
+            .setTimestamp(Date.now() + 3e4),
+        modifyRetry: (_: Message, str: string): MessageEmbed =>
+          new MessageEmbed()
+            .setColor(colors.primary)
+            .setDescription(
+              `${_.author}, ${str}\n\nType \`cancel\` to cancel the command...`
+            )
+            .setFooter("Type 'cancel' or wait until prompt ends at")
+            .setTimestamp(Date.now() + 3e4),
+        timeout: new MessageEmbed()
+          .setColor(colors.error)
+          .setDescription(
+            "You took too long! The command has been cancelled..."
+          ),
+        ended: new MessageEmbed()
+          .setColor(colors.error)
+          .setDescription(
+            "You exceeded the maximum amount of tries, this command has been cancelled..."
+          ),
+        cancel: new MessageEmbed()
+          .setColor(colors.error)
+          .setDescription("The command has been cancelled..."),
         retries: 3,
         time: 3e4,
       },

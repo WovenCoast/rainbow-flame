@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { join, dirname } from "path";
-dotenv.config({ path: join(dirname(require.main.filename), "../.env") });
+dotenv.config({ path: join(dirname(require.main.filename), "../../.env") });
 import { LavalinkNodeOptions } from "lavacord";
 
 export let token: string = process.env.DISCORD_TOKEN;
@@ -16,12 +16,16 @@ export let lavalink: LavalinkNodeOptions = {
 };
 interface Colors {
   scheme: string[];
+  primary: string;
+  secondary: string;
   info: string;
   error: string;
   success: string;
 }
 export let colors: Colors = {
   scheme: ["#FF9AA2", "#FFB7B2", "#FFDAC1", "#E2F0CB", "#B5EAD7", "#C7CEEA"],
+  primary: "#FFFFFF",
+  secondary: "#EEEEEE",
   info: "#92DFF3",
   error: "#FF9AA2",
   success: "#B5EAD7",

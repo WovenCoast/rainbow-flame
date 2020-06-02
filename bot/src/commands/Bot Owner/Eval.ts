@@ -1,32 +1,17 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import {
-  chunk,
-  convertBytes,
-  convertDuration,
-  convertMs,
-  delay,
-  exec,
-  getBase64,
-  getRandom,
-  getSongs,
-  pluralify,
-  randomValue,
-  sanitize,
-  shuffle,
-  titleCase,
-} from "../../Utils";
+//@ts-ignore
+import util, { convertMs, sanitize } from "../../Utils";
 import { colors } from "../../Config";
 import { performance } from "perf_hooks";
 import { inspect } from "util";
 import { MessageEmbed } from "discord.js";
-import axios from "axios";
 
 export default class EvalCommand extends Command {
   public constructor() {
     super("eval", {
       aliases: ["eval"],
-      category: "Misc",
+      category: "Bot Owner",
       description: {
         content: "Evaluate some JavaScript code on me",
         usage: "eval",

@@ -37,8 +37,8 @@ export class FlameConsole extends Console {
         .join("\n") + "\n"
     );
   }
-  rainbow(...args: any[]) {
-    this.output(rainbowColor, "special", ...args);
+  rainbow(type, ...args: any[]) {
+    this.output(rainbowColor, type, ...args);
   }
   log(...args: any[]) {
     this.output(blue, "log", ...args);

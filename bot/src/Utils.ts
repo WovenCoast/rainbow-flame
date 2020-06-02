@@ -82,21 +82,7 @@ export function exec(command: string): Promise<string> {
   });
 }
 export function shuffle<K extends any>(array: Array<K>): Array<K> {
-  const tempArray = Object.assign([], array);
-  var currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
-
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    temporaryValue = tempArray[currentIndex];
-    tempArray[currentIndex] = tempArray[randomIndex];
-    tempArray[randomIndex] = temporaryValue;
-  }
-
-  return tempArray;
+  return array.sort(() => Math.random() - 0.5);
 }
 
 export function chunk(length: number, string: string): Array<string> {

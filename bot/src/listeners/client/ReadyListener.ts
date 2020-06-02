@@ -26,6 +26,7 @@ export default class ReadyListener extends Listener {
     );
 
     (console as FlameConsole).rainbow(
+      "ready",
       `${this.client.user.tag} is online and ready!`
     );
 

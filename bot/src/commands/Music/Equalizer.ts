@@ -48,6 +48,7 @@ export default class EqualizerCommand extends Command {
   constructor() {
     super("equalizer", {
       aliases: ["equalizer", "equaliser", "eq"],
+      category: "Music",
       ratelimit: 2,
       args: [
         {
@@ -76,9 +77,11 @@ export default class EqualizerCommand extends Command {
           flag: ["-m=", "--m=", "--multiplier=", "--mult="],
         },
       ],
+      userPermissions: (msg: Message) => {
+        if (!(msg.guild as FlameGuild).music.playing) return "MUSIC_PLAYING";
+      },
     });
   }
-
   public async exec(
     message: Message,
     { preset, multiplier }: { preset: string; multiplier: number }
