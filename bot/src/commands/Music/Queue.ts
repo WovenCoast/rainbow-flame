@@ -51,6 +51,10 @@ export default class QueueCommand extends Command {
       Math.ceil((message.guild as FlameGuild).music.songs.length / pageWidth)
     )
       return message.util.reply("that page doesn't exist!");
+    const songs = (message.guild as FlameGuild).music.songs.slice(
+      (page - 1) * pageWidth,
+      page * pageWidth
+    );
     return message.util.send(
       new MessageEmbed()
         .setColor(colors.info)
@@ -59,8 +63,7 @@ export default class QueueCommand extends Command {
           message.guild.iconURL({ dynamic: true })
         )
         .setDescription(
-          (message.guild as FlameGuild).music.songs
-            .slice((page - 1) * pageWidth, page * pageWidth)
+          songs
             .map((s, i) =>
               `${
                 i + (page - 1) * pageWidth !==
@@ -76,7 +79,9 @@ export default class QueueCommand extends Command {
             .join("\n")
         )
         .setFooter(
-          `Page ${page} of ${Math.ceil(
+          `Total duration: ${convertDuration(
+            songs.map((s) => s.info.length).reduce((acc, d) => acc + d, 0)
+          )}\nPage ${page} of ${Math.ceil(
             (message.guild as FlameGuild).music.songs.length / pageWidth
           )}`
         )

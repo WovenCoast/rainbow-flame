@@ -1,14 +1,21 @@
+import { AkairoClient } from "discord-akairo";
+
 import { HasteAPI } from "./apis/Haste";
 import { VultrexAPI } from "./apis/Vultrex";
-import { AkairoClient } from "discord-akairo";
+import { MinecraftAPI } from "./apis/Minecraft";
+import { RadioGardenAPI } from "./apis/RadioGarden";
 
 export class APIManager {
   client: AkairoClient;
   hastebin: HasteAPI;
+  minecraft: MinecraftAPI;
+  radioGarden: RadioGardenAPI;
   vultrex: VultrexAPI;
-  constructor(client) {
+  constructor(client: AkairoClient) {
     this.client = client;
     this.hastebin = new HasteAPI(client);
+    this.minecraft = new MinecraftAPI(client);
+    this.radioGarden = new RadioGardenAPI(client);
     this.vultrex = new VultrexAPI(client, process.env.VULTREX_TOKEN);
   }
   public async postServerCount() {

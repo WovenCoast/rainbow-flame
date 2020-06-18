@@ -1,6 +1,7 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { convertMs } from "../../Utils";
+import { loading } from "../../Emojis";
 
 export default class PingCommand extends Command {
   public constructor() {
@@ -8,7 +9,7 @@ export default class PingCommand extends Command {
       aliases: ["ping", "pong", "p"],
       category: "Misc",
       description: {
-        content: "Check the latency from the bot to the discord api",
+        content: "Check the latency from the bot to the Discord API",
         usage: "ping",
         examples: ["ping"],
       },
@@ -17,7 +18,7 @@ export default class PingCommand extends Command {
   }
 
   public async exec(message: Message): Promise<Message> {
-    const msg = await message.util.send(`Pinging...`);
+    const msg = await message.util.send(`${loading} Pinging...`);
     return await msg.edit(
       `:ping_pong: Pong! Gateway: **${convertMs(
         this.client.ws.ping

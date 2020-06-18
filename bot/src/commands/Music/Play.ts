@@ -1,11 +1,12 @@
 import { Command } from "discord-akairo";
 import { Message, TextChannel } from "discord.js";
-import { getSongs, convertDuration } from "../../Utils";
+import { getSongs, convertDuration, titleCase, range } from "../../Utils";
 
 import { FlameGuild } from "../../structures/discord.js/Guild";
 import { TrackData, TrackResponse, LoadType } from "lavacord";
 import { MessageEmbed } from "discord.js";
 import { colors } from "../../Config";
+import { loading } from "../../Emojis";
 
 const searchTypes = {
   yt: "ytsearch",
@@ -15,6 +16,7 @@ const searchTypes = {
   scsearch: "scsearch",
   soundcloud: "scsearch",
 };
+const audioFormats = ["mp3", "wav", "m4a"];
 
 export default class PlayCommand extends Command {
   public constructor() {
@@ -30,7 +32,16 @@ export default class PlayCommand extends Command {
       args: [
         {
           id: "search",
-          type: "string",
+          type: (msg: Message, str: string) =>
+            msg.attachments.filter((attachment) =>
+              audioFormats.some((filetype) => attachment.url.endsWith(filetype))
+            ).size === 0
+              ? str
+              : msg.attachments.find((attachment) =>
+                  audioFormats.some((filetype) =>
+                    attachment.url.endsWith(filetype)
+                  )
+                ).url,
           match: "rest",
           prompt: {
             start: (_: Message) =>
@@ -55,7 +66,7 @@ export default class PlayCommand extends Command {
     message: Message,
     { search, searchType }: { search: string; searchType: string }
   ): Promise<any> {
-    if (!message.member.voice)
+    if (!message.member.voice.channel)
       return message.util.reply("you must be connected to a voice channel!");
     if (
       !message.member.voice.channel
@@ -73,14 +84,15 @@ export default class PlayCommand extends Command {
       return message.util.reply(
         "you must be connected to a voice channel that I can speak in!"
       );
+    const msg = await message.channel.send(`${loading} Searching...`);
     const res: TrackResponse = await getSongs(
       this.client.manager,
       `${search.startsWith("http") ? "" : searchType + ":"}${search}`
     );
     if (res.loadType === LoadType.NO_MATCHES)
-      return message.util.send(":shrug: Couldn't find any song with that name");
+      return msg.edit(":shrug: Couldn't find any song with that name");
     if (res.loadType === LoadType.LOAD_FAILED) {
-      return message.util.send(
+      return msg.edit(
         //@ts-ignore
         `:x: Something went wrong on our side, \`${res.exception.message}\``
       );
@@ -96,26 +108,45 @@ export default class PlayCommand extends Command {
         message.channel as TextChannel,
         songs[0]
       );
-      await message.channel.send(
+      await msg.edit(
         `:white_check_mark: Successfully loaded the playlist **${res.playlistInfo.name}**!`
       );
       return;
     }
     if (res.loadType === LoadType.TRACK_LOADED) {
       const song = res.tracks[0];
-      if (song.info.isStream)
-        return message.util.send(
-          `:octagonal_sign: **${song.info.title}** by **${song.info.author}** is a live stream!`
-        );
+      if (song.info.title === "Unknown title")
+        song.info.title = song.info.uri.startsWith(
+          "https://cdn.discordapp.com/"
+        )
+          ? titleCase(
+              song.info.uri
+                .split("/")
+                .filter((e) => e.trim() !== "")
+                .pop()
+                .split(".")[0]
+                .replace(/_/gi, " ")
+            )
+          : titleCase(
+              song.info.uri
+                .split("/")
+                .filter((e) => e.trim() !== "")
+                .pop()
+                .replace(/\./gi, " ")
+            );
+      if (song.info.author === "Unknown artist")
+        song.info.author = message.author.tag;
       await (message.guild as FlameGuild).music.startPlaying(
         message.member.voice.channel,
         message.channel as TextChannel,
         song
       );
+      await msg.edit(`:white_check_mark: Track loaded successfully!`);
     }
     if (res.loadType === LoadType.SEARCH_RESULT) {
       const songs = res.tracks.slice(0, 5);
-      await message.channel.send(
+      await msg.edit(
+        `${message.author}, select a song`,
         new MessageEmbed()
           .setColor(colors.info)
           .setAuthor(
@@ -135,7 +166,7 @@ export default class PlayCommand extends Command {
       const collector = message.channel.createMessageCollector(
         (msg: Message) =>
           msg.author.id === message.author.id &&
-          [1, 2, 3, 4, 5, "cancel"]
+          [...range(1, songs.length), "cancel"]
             .map((e) => `${e}`)
             .includes(msg.content.toLowerCase()),
         { max: 1, time: 6e4 }

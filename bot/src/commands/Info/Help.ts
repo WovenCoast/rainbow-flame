@@ -8,12 +8,12 @@ export default class HelpCommand extends Command {
   constructor() {
     super("help", {
       aliases: ["help", "h", "commandinfo"],
-      category: "Misc",
+      category: "Info",
       ratelimit: 5,
       description: {
         content: "Display the commands of me",
         usage: "help [category|command:string]",
-        examples: ["help ping", "help musc"],
+        examples: ["help ping", "help misc"],
       },
       args: [
         {

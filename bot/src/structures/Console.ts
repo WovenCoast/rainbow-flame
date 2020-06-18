@@ -1,4 +1,11 @@
-import { yellow, red, blue, green, hex } from "chalk";
+import {
+  yellowBright as yellow,
+  redBright as red,
+  blueBright as blue,
+  greenBright as green,
+  cyanBright as cyan,
+  hex,
+} from "chalk";
 import { inspect } from "util";
 import { Console } from "console";
 import { colors } from "../Config";
@@ -30,24 +37,31 @@ export class FlameConsole extends Console {
         .filter((s: string) => s.trim() !== "")
         .map(
           (s: string) =>
-            `[ ${color(this.timestamp)} ]${color("-")}( ${color(
+            `[ ${cyan(this.timestamp)} ]${color("-")}( ${green(
               type.toUpperCase()
             )} ) ${color(s)}`
         )
         .join("\n") + "\n"
     );
   }
-  rainbow(type, ...args: any[]) {
-    this.output(rainbowColor, type, ...args);
+  rainbow(source: string, ...args: any[]) {
+    this.output(rainbowColor, source, ...args);
   }
-  log(...args: any[]) {
-    this.output(blue, "log", ...args);
+  log(source: string, arg: string, properties: Object = {}) {
+    this.output(
+      blue,
+      source,
+      arg.replace(
+        new RegExp(`{(${Object.keys(properties).join("|")})}`, "g"),
+        (match, property) => cyan(properties[property] || "")
+      )
+    );
   }
-  error(...args: any[]) {
-    this.output(red, "error", ...args);
+  error(source: string, ...args: any[]) {
+    this.output(red, source, ...args);
   }
-  warn(...args: any[]) {
-    this.output(yellow, "warn", ...args);
+  warn(source: string, ...args: any[]) {
+    this.output(yellow, source, ...args);
   }
   debug(...args: any[]) {
     this.output(green, "debug", ...args);

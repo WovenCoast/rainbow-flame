@@ -4,14 +4,14 @@ import ms from "ms";
 
 import { Repository } from "typeorm";
 import { Giveaway } from "../../models/Giveaway";
-import GiveawayManager from "../../structures/giveaways/GiveawayManager";
+import GiveawayManager from "../../structures/misc/GiveawayManager";
 import { colors } from "../../Config";
 
 export default class GiveawayCommand extends Command {
   public constructor() {
     super("giveaway", {
       aliases: ["giveaway"],
-      category: "Misc",
+      category: "Utility",
       description: {
         content: "Start a giveaway in your server",
         usage: "giveaway {time} [item]",
@@ -21,7 +21,8 @@ export default class GiveawayCommand extends Command {
       args: [
         {
           id: "time",
-          type: (msg: Message, str: string) => (str ? Number(ms(str)) : null),
+          type: (msg: Message, str: string) =>
+            str ? (isNaN(Number(ms(str))) ? null : Number(ms(str))) : null,
           prompt: {
             start: (msg: Message) =>
               `you need to provide a time duration for the giveaway!`,
@@ -34,8 +35,7 @@ export default class GiveawayCommand extends Command {
           type: "string",
           match: "rest",
           prompt: {
-            start: (msg: Message) =>
-              `${msg.author}, you need to provide an item to giveaway!`,
+            start: (msg: Message) => `you need to provide an item to giveaway!`,
           },
         },
       ],

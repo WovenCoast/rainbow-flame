@@ -35,7 +35,7 @@ export default class ExecCommand extends Command {
     message: Message,
     { input }: { input: string }
   ): Promise<any> {
-    const hastebin = "https://hasteb.in/";
+    const hastebin = "https://haste.wovencoast.me/";
     const start = performance.now();
     try {
       let result: any = exec(input);
@@ -63,7 +63,7 @@ export default class ExecCommand extends Command {
           .addField("Input", `\`\`\`${input}\`\`\``)
           .addField(
             "Output",
-            `${isURL ? "" : "```"}${sanitize(result)}${isURL ? "" : "```"}`
+            `${isURL ? "" : "```\n"}${sanitize(result)}${isURL ? "" : "```"}`
           )
           .setFooter(`Executed in ${convertMs(duration)}`)
       );

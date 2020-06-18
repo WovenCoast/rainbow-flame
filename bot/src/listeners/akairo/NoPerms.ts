@@ -27,7 +27,7 @@ export default class NoPermsListener extends Listener {
           `To evaluate \`${prefix} ${cmd.id}\`, ${
             type === "client" ? "I" : "you"
           } need these permissions:- \n${missingPerms
-            .map((p) => `\`${titleCase(p.toString().replaceAll("_", " "))}\``)
+            .map((p) => `\`${titleCase(p.toString().replace(/_/gi, " "))}\``)
             .join(", ")}`
         )
     );

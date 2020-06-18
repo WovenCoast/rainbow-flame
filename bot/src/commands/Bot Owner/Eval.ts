@@ -36,7 +36,7 @@ export default class EvalCommand extends Command {
     message: Message,
     { input }: { input: string }
   ): Promise<any> {
-    const hastebin = "https://hasteb.in/";
+    const hastebin = "https://haste.wovencoast.me/";
     const start = performance.now();
     try {
       let result: any = eval(input);
@@ -64,7 +64,7 @@ export default class EvalCommand extends Command {
           .addField("Input", `\`\`\`${input}\`\`\``)
           .addField(
             "Output",
-            `${isURL ? "" : "```"}${sanitize(result)}${isURL ? "" : "```"}`
+            `${isURL ? "" : "```\n"}${sanitize(result)}${isURL ? "" : "```"}`
           )
           .setFooter(`Evaluated in ${convertMs(duration)}`)
       );
@@ -78,7 +78,7 @@ export default class EvalCommand extends Command {
           )
           .setColor(colors.error)
           .addField("Input", `\`\`\`${input}\`\`\``)
-          .addField("Error", `\`\`\`${e}\`\`\``)
+          .addField("Error", `\`\`\`\n${e}\`\`\``)
           .setFooter(`Evaluated in ${convertMs(duration)}`)
       );
     }

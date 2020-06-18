@@ -3,6 +3,8 @@ import axios from "axios";
 import { URLSearchParams } from "url";
 import { LavalinkNode } from "@lavacord/discord.js";
 import { Manager, TrackResponse } from "lavacord";
+import { Request, Response } from "express";
+import { restAuth } from "./Config";
 
 export function randomValue(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -34,13 +36,29 @@ export function convertDuration(duration: number): string {
   const seconds = showWith0(Math.floor(duration % 60));
   const minutes = showWith0(Math.floor(duration / 60) % 60);
   const hours = showWith0(Math.floor((duration / 60 / 60) % 24));
-  const days = showWith0(Math.floor(duration / 60 / 60 / 24));
-  return `${days !== "00" ? days + ":" : ""}${
+  const days = showWith0(Math.floor((duration / 60 / 60 / 24) % 7));
+  const weeks = showWith0(Math.floor((duration / 60 / 60 / 24 / 7) % 4));
+  const months = showWith0(Math.floor((duration / 60 / 60 / 24 / 7 / 4) % 12));
+  const years = showWith0(Math.floor(duration / 60 / 60 / 24 / 7 / 4 / 12));
+  return `${years !== "00" ? years + ":" : ""}${
+    months !== "00" ? months + ":" : ""
+  }${weeks !== "00" ? weeks + ":" : ""}${days !== "00" ? days + ":" : ""}${
     hours !== "00" ? hours + ":" : ""
   }${minutes}:${seconds}`;
 }
 export function getRandom(arr: any[]): any {
   return arr[randomValue(0, arr.length)];
+}
+export function range(
+  min: number,
+  max: number,
+  increment: number = 1
+): Array<number> {
+  const arr = [];
+  for (let i = min; i <= max; i += increment) {
+    arr.push(i);
+  }
+  return arr;
 }
 export function titleCase(string: string): string {
   return string
@@ -51,10 +69,21 @@ export function titleCase(string: string): string {
 export function pluralify(
   amount: number,
   string: string,
-  returnAmount: boolean = true
+  pluralModifier: string = "s"
 ): string {
-  if (amount === 1) return (returnAmount ? amount + " " : "") + string;
-  else return (returnAmount ? amount + " " : "") + string + "s";
+  if (amount === 0) return "No " + string + pluralModifier;
+  if (amount === 1) return amount + " " + string;
+  else return amount + " " + string + pluralModifier;
+}
+export function trimArray(
+  arr: Array<string>,
+  maxLen: number = 10
+): Array<string> {
+  if (arr.length > maxLen) {
+    arr.push(`${arr.length - maxLen} more`);
+    return arr;
+  }
+  return arr;
 }
 export function sanitize(string: string): string {
   return string.replace(
@@ -76,7 +105,7 @@ export function delay(ms: number): Promise<void> {
 export function exec(command: string): Promise<string> {
   return new Promise((resolve, reject) => {
     childProcess.exec(command, (err, stdout, stderr) => {
-      if (err) reject(stderr);
+      if (err) reject(stdout);
       else resolve(stdout);
     });
   });
@@ -120,4 +149,12 @@ export async function getBase64(url: string): Promise<Object> {
   } catch (e) {
     return { success: false, error: e };
   }
+}
+export function requireAuth(req: Request, res: Response, next: Function) {
+  if (req.headers.authorization !== restAuth)
+    return res.status(401).send({
+      error: true,
+      message: "Unauthorized",
+    });
+  next(req, res);
 }

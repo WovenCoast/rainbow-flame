@@ -1,10 +1,13 @@
 import { Listener } from "discord-akairo";
 import { TextChannel, Message } from "discord.js";
-import { Repository } from "typeorm";
-import { Giveaway } from "../../models/Giveaway";
-import GiveawayManager from "../../structures/giveaways/GiveawayManager";
 import { FlameConsole } from "../../structures/Console";
-import { pluralify } from "../../Utils";
+import API from "../../api/API";
+
+import { Repository } from "typeorm";
+import ReminderManager from "../../structures/misc/ReminderManager";
+import { Reminder } from "../../models/Reminder";
+import GiveawayManager from "../../structures/misc/GiveawayManager";
+import { Giveaway } from "../../models/Giveaway";
 
 export default class ReadyListener extends Listener {
   public constructor() {
@@ -16,46 +19,66 @@ export default class ReadyListener extends Listener {
   }
 
   public async exec(): Promise<void> {
+    (console as FlameConsole).log("discord.js", `{user} is online and ready!`, {
+      user: this.client.user.tag,
+    });
+    // API
+    new API(this.client).start();
+    // Lavalink
+    this.client.manager.on("ready", (node) => {
+      (console as FlameConsole).log(
+        "lavalink",
+        `Lavalink ID {node} is ready!`,
+        { node: node.id }
+      );
+    });
+    this.client.manager.on("error", (error, node) => {
+      (console as FlameConsole).error("lavalink", node.id, error);
+    });
     await this.client.manager.connect();
-    this.client.manager.on("error", (error, node) =>
-      console.error(error, node)
-    );
 
-    const giveawayRepo: Repository<Giveaway> = this.client.db.getRepository(
-      Giveaway
-    );
+    // Reminders
+    try {
+      const reminderRepo: Repository<Reminder> = this.client.db.getRepository(
+        Reminder
+      );
+      const reminders: Reminder[] = await reminderRepo.find();
+      await Promise.all(
+        reminders.map(async (r) => {
+          if (r.end <= Date.now()) {
+            ReminderManager.end(this.client, reminderRepo, r.uniqueId);
+          } else {
+            setTimeout(() => {
+              ReminderManager.end(this.client, reminderRepo, r.uniqueId);
+            }, r.end - Date.now());
+          }
+        })
+      );
 
-    (console as FlameConsole).rainbow(
-      "ready",
-      `${this.client.user.tag} is online and ready!`
-    );
-
-    const giveaways: Giveaway[] = await giveawayRepo.find();
-    giveaways
-      .filter((g) => g.end <= Date.now()) // Giveaways that have finished
-      .map(async (g) => {
-        const msg: Message = await (
-          await (this.client.channels.cache.get(
-            g.channel
-          ) as TextChannel).messages
-            .fetch()
-            .catch(() => null)
-        ).get(g.message);
-        GiveawayManager.end(giveawayRepo, msg); // End them as soon as the bot is alive
-      });
-    giveaways
-      .filter((g) => !(g.end <= Date.now())) // Giveaways that have not finished
-      .map(async (g) => {
-        const msg: Message = await (
-          await (this.client.channels.cache.get(
-            g.channel
-          ) as TextChannel).messages.fetch()
-        ).get(g.message);
-        if (!msg) giveawayRepo.delete(g);
-        // Restart the timeout with the correct time
-        setTimeout(() => {
-          GiveawayManager.end(giveawayRepo, msg);
-        }, g.end - Date.now());
-      });
+      // Giveaways
+      const giveawayRepo: Repository<Giveaway> = this.client.db.getRepository(
+        Giveaway
+      );
+      const giveaways: Giveaway[] = await giveawayRepo.find();
+      await Promise.all(
+        giveaways.map(async (g) => {
+          const msg: Message = await (
+            await (this.client.channels.cache.get(
+              g.channel
+            ) as TextChannel).messages.fetch()
+          ).get(g.message);
+          if (!msg) giveawayRepo.delete(g);
+          if (!g.end || g.end <= Date.now()) {
+            GiveawayManager.end(giveawayRepo, msg);
+          } else {
+            setTimeout(() => {
+              GiveawayManager.end(giveawayRepo, msg);
+            }, g.end - Date.now());
+          }
+        })
+      );
+    } catch (e) {
+      return;
+    }
   }
 }

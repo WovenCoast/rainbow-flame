@@ -101,7 +101,7 @@ export default class Music {
 
   async addToQueue(song: TrackData): Promise<boolean> {
     try {
-      if (this.songs.indexOf(song) !== -1) {
+      if (this.songs.map((s) => s.info.uri).indexOf(song.info.uri) !== -1) {
         this.textChannel.send(
           `:octagonal_sign: That song is already in the queue!`
         );

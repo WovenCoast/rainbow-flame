@@ -1,6 +1,6 @@
 import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { join } from "path";
-import { prefix, owners, dbName, lavalink, userID, colors } from "../Config";
+import { prefix, owners, dbName, lavalink, colors } from "../Config";
 import { Connection } from "typeorm";
 import Database from "../structures/Database";
 import { FlameGuild } from "../structures/discord.js/Guild";
@@ -10,6 +10,8 @@ import { Manager } from "@lavacord/discord.js";
 import { APIManager } from "../structures/APIManager";
 import { FlameConsole } from "../structures/Console";
 import { MessageEmbed } from "discord.js";
+import SettingsProvider from "../structures/SettingsProvider";
+import { Setting } from "../models/Settings";
 global.console = new FlameConsole(process.stdout, process.stderr, false);
 
 declare module "discord-akairo" {
@@ -18,6 +20,7 @@ declare module "discord-akairo" {
     commandHandler: CommandHandler;
     listenerHandler: ListenerHandler;
     db: Connection;
+    settings: SettingsProvider;
     manager: Manager;
     apis: APIManager;
   }
@@ -31,6 +34,7 @@ interface BotOptions {
 export default class BotClient extends AkairoClient {
   public config: BotOptions;
   public db: Connection;
+  public settings: SettingsProvider;
   public console: FlameConsole = new FlameConsole(
     process.stdout,
     process.stderr,
@@ -44,6 +48,8 @@ export default class BotClient extends AkairoClient {
   public commandHandler: CommandHandler = new CommandHandler(this, {
     directory: join(__dirname, "../commands"),
     prefix: prefix,
+    automateCategories: true,
+    blockBots: true,
     allowMention: true,
     handleEdits: true,
     commandUtil: true,
@@ -109,6 +115,8 @@ export default class BotClient extends AkairoClient {
     this.db = Database.get(dbName);
     await this.db.connect();
     await this.db.synchronize();
+
+    this.settings = new SettingsProvider(this.db.getRepository(Setting));
   }
 
   public async start(): Promise<string> {

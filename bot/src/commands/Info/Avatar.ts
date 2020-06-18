@@ -6,7 +6,7 @@ export default class AvatarCommand extends Command {
   public constructor() {
     super("avatar", {
       aliases: ["avatar", "av", "avtr", "picture"],
-      category: "Misc",
+      category: "Info",
       description: {
         content: "Display the avatar of a member",
         usage: "avatar [member]",
