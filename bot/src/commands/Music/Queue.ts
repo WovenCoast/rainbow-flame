@@ -10,7 +10,7 @@ const pageWidth = 5;
 export default class QueueCommand extends Command {
   constructor() {
     super("queue", {
-      aliases: ["queue", "q"],
+      aliases: ["queue", "q", "nowplaying", "np"],
       category: "Music",
       channel: "guild",
       description: {
