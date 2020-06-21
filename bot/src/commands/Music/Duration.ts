@@ -65,11 +65,13 @@ export default class DurationCommand extends Command {
     if (
       (message.guild as FlameGuild).music.songs[
         (message.guild as FlameGuild).music.playHead
-      ].info.length > newDuration
+      ].info.length < newDuration
     )
       return message.util.reply(
         "that duration is bigger than the amount to set the duration to!"
       );
+    if (0 > newDuration)
+      return message.util.reply("that duration is smaller than 0!");
     (message.guild as FlameGuild).music.duration = newDuration;
     return message.util.send(
       `:white_check_mark: Successfully set the duration to **${convertDuration(

@@ -1,6 +1,8 @@
-import { Listener } from "discord-akairo";
+import { Listener, AkairoClient } from "discord-akairo";
 import { TextChannel, Message } from "discord.js";
 import { FlameConsole } from "../../structures/Console";
+import { getRandom, pluralify } from "../../Utils";
+import { debug, prefix } from "../../Config";
 import API from "../../api/API";
 
 import { Repository } from "typeorm";
@@ -9,7 +11,19 @@ import { Reminder } from "../../models/Reminder";
 import GiveawayManager from "../../structures/misc/GiveawayManager";
 import { Giveaway } from "../../models/Giveaway";
 
+const statuses = ["online", "idle", "dnd"];
+const presences = [
+  (client: AkairoClient) => `${pluralify(client.guilds.cache.size, "guild")}`,
+  (client: AkairoClient) => `${pluralify(client.users.cache.size, "user")}`,
+  (client: AkairoClient) =>
+    `${pluralify(client.users.cache.filter((u) => !u.bot).size, "human")}`,
+  (client: AkairoClient) =>
+    `${pluralify(client.users.cache.filter((u) => u.bot).size, "bots")}`,
+  (client: AkairoClient) =>
+    `${pluralify(client.channels.cache.size, "channel")}`,
+];
 export default class ReadyListener extends Listener {
+  private currentStatus: number = -1;
   public constructor() {
     super("ready", {
       emitter: "client",
@@ -22,6 +36,18 @@ export default class ReadyListener extends Listener {
     (console as FlameConsole).log("discord.js", `{user} is online and ready!`, {
       user: this.client.user.tag,
     });
+    if (!debug) {
+      setInterval(() => {
+        this.currentStatus++;
+        this.client.user.setPresence({
+          status: statuses[this.currentStatus] as "online" | "idle" | "dnd",
+          activity: {
+            type: "WATCHING",
+            name: `${getRandom(presences)(this.client)} | ${prefix} help`,
+          },
+        });
+      }, 15e3);
+    }
     // API
     new API(this.client).start();
     // Lavalink

@@ -1,6 +1,6 @@
 import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { join } from "path";
-import { prefix, owners, dbName, lavalink, colors } from "../Config";
+import { prefix, owners, dbName, lavalink, colors, version } from "../Config";
 import { Connection } from "typeorm";
 import Database from "../structures/Database";
 import { FlameGuild } from "../structures/discord.js/Guild";
@@ -23,6 +23,7 @@ declare module "discord-akairo" {
     settings: SettingsProvider;
     manager: Manager;
     apis: APIManager;
+    version: string;
   }
 }
 
@@ -35,6 +36,7 @@ export default class BotClient extends AkairoClient {
   public config: BotOptions;
   public db: Connection;
   public settings: SettingsProvider;
+  public version: string = version;
   public console: FlameConsole = new FlameConsole(
     process.stdout,
     process.stderr,

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import fetch from "node-fetch";
 
 import NavigationBar from "./navigation/NavigationBar";
 
@@ -9,7 +10,22 @@ export default class App extends Component {
     user: null,
   };
   componentDidMount() {
-    this.setState({ loading: false });
+    fetch(
+      `${
+        process.env.REACT_APP_DEBUG === "true"
+          ? "http://localhost:7001"
+          : "https://api.rainbowflame.quniverse.xyz"
+      }/oauth/details`,
+      {
+        credentials: "include",
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res) return this.setState({ loading: false });
+        this.setState({ loading: false, user: res });
+      })
+      .catch(() => this.setState({ loading: false }));
   }
   render() {
     if (this.state.loading) {
@@ -21,15 +37,19 @@ export default class App extends Component {
         </React.Fragment>
       );
     } else if (!this.state.user) {
-      window.location.replace("https://discord.com");
+      window.location.replace(
+        `${
+          process.env.REACT_APP_DEBUG === "true"
+            ? "http://localhost:7001"
+            : "https://api.rainbowflame.quniverse.xyz"
+        }/oauth/login`
+      );
       return <React.Fragment />;
     } else {
       return (
         <React.Fragment>
           <Router>
-            <div className="container">
-              <NavigationBar user={this.state.user} />
-            </div>
+            <NavigationBar user={this.state.user} />
           </Router>
         </React.Fragment>
       );

@@ -24,6 +24,7 @@ export default class NavigationBar extends Component {
     this.setState({ isOpen: !this.state.isOpen });
   }
   render() {
+    console.log(this.props);
     return (
       <MDBNavbar color="black" dark expand="md">
         <MDBNavbarBrand>

@@ -1,8 +1,8 @@
 import { Router, Request, Response, Application } from "express";
 import { AkairoClient } from "discord-akairo";
 import { Guild } from "discord.js";
-import { restAuth } from "../../../Config";
-import { requireAuth } from "../../../Utils";
+import { restAuth } from "../../Config";
+import { requireAuth } from "../../Utils";
 
 export default class GuildRouter {
   protected app: Application;
@@ -16,7 +16,7 @@ export default class GuildRouter {
 
     this.app.use(this.router);
 
-    // http://localhost:8888/v1/get/guild/:id
+    // http://localhost:7001/v1/get/guild/:id
     this.router.get("/v1/get/guild/:id", (req: Request, res: Response) => {
       const guild: Guild = this.client.guilds.cache.get(req.params.id);
       if (!guild)
@@ -32,7 +32,7 @@ export default class GuildRouter {
       });
     });
 
-    // http://localhost:8888/v1/post/guild-name/:id
+    // http://localhost:7001/v1/post/guild-name/:id
     this.router.post(
       "/v1/post/guild-name/:id",
       requireAuth,

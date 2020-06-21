@@ -42,22 +42,17 @@ export class VultrexAPI {
     }
   }
 
-  private async fetchVotes(): Promise<string[]> {
+  public async fetchVotes(
+    bot: string = this.client.user.id
+  ): Promise<string[]> {
     return (
-      await axios.post(
-        `${domain}/v3/bot/${this.client.user.id}/votes`,
-        JSON.stringify({
-          serverCount: this.client.guilds.cache.size,
-          shardCount: this.client.ws.shards.size,
-        }),
-        {
-          method: "POST",
-          headers: {
-            Authorization: this.token,
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      await axios.get(`${domain}/v3/bot/${bot}/votes`, {
+        method: "POST",
+        headers: {
+          Authorization: this.token,
+          "Content-Type": "application/json",
+        },
+      })
     ).data.response;
   }
 
