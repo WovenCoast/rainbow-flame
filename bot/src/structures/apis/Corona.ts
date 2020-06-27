@@ -55,15 +55,20 @@ export class CoronaAPI {
     country: string,
     fallbackToGlobal: boolean = false
   ): Promise<Country> {
+    if (!country) return fallbackToGlobal ? await this.global() : null;
     const data = await this.allCountries();
     return (
       data.find(
-        (c) => c.countryInfo.iso2.toLowerCase() === country.toLowerCase()
+        (c) =>
+          (c.countryInfo.iso2 || "").toLowerCase() === country.toLowerCase()
       ) ||
       data.find(
-        (c) => c.countryInfo.iso3.toLowerCase() === country.toLowerCase()
+        (c) =>
+          (c.countryInfo.iso3 || "").toLowerCase() === country.toLowerCase()
       ) ||
-      data.find((c) => c.country.toLowerCase() === country.toLowerCase()) ||
+      data.find(
+        (c) => (c.country || "").toLowerCase() === country.toLowerCase()
+      ) ||
       (fallbackToGlobal ? await this.global() : null)
     );
   }
