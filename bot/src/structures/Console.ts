@@ -1,11 +1,5 @@
-import {
-  yellowBright as yellow,
-  redBright as red,
-  blueBright as blue,
-  greenBright as green,
-  cyanBright as cyan,
-  hex,
-} from "chalk";
+import { yellow, red, blue, green, cyan } from "colors";
+import { hex } from "chalk";
 import { inspect } from "util";
 import { Console } from "console";
 import { colors } from "../Config";

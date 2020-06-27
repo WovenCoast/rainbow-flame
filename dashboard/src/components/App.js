@@ -9,6 +9,7 @@ export default class App extends Component {
     loading: true,
     user: null,
   };
+
   componentDidMount() {
     fetch(
       `${
@@ -27,6 +28,7 @@ export default class App extends Component {
       })
       .catch(() => this.setState({ loading: false }));
   }
+
   render() {
     if (this.state.loading) {
       return (

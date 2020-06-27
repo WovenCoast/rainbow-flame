@@ -12,7 +12,14 @@ import { FlameConsole } from "../structures/Console";
 import { MessageEmbed } from "discord.js";
 import SettingsProvider from "../structures/SettingsProvider";
 import { Setting } from "../models/Settings";
+import Music from "../structures/music/MusicGuild";
 global.console = new FlameConsole(process.stdout, process.stderr, false);
+
+declare module "discord.js" {
+  interface Guild {
+    music: Music;
+  }
+}
 
 declare module "discord-akairo" {
   interface AkairoClient {

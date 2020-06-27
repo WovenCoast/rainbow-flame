@@ -2,7 +2,7 @@ import axios from "axios";
 import { AkairoClient } from "discord-akairo";
 import { User } from "discord.js";
 
-const domain = "https://api.vultrex.io";
+const domain = "https://api.vultrex.co";
 const ratelimit = 3e5;
 
 export class VultrexAPI {
@@ -45,15 +45,19 @@ export class VultrexAPI {
   public async fetchVotes(
     bot: string = this.client.user.id
   ): Promise<string[]> {
-    return (
-      await axios.get(`${domain}/v3/bot/${bot}/votes`, {
-        method: "POST",
-        headers: {
-          Authorization: this.token,
-          "Content-Type": "application/json",
-        },
-      })
-    ).data.response;
+    try {
+      return (
+        await axios.get(`${domain}/v3/bot/${bot}/votes`, {
+          method: "POST",
+          headers: {
+            Authorization: this.token,
+            "Content-Type": "application/json",
+          },
+        })
+      ).data.response;
+    } catch (e) {
+      return [];
+    }
   }
 
   public async hasVoted(user: User) {

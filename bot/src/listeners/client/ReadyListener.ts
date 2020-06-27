@@ -18,7 +18,7 @@ const presences = [
   (client: AkairoClient) =>
     `${pluralify(client.users.cache.filter((u) => !u.bot).size, "human")}`,
   (client: AkairoClient) =>
-    `${pluralify(client.users.cache.filter((u) => u.bot).size, "bots")}`,
+    `${pluralify(client.users.cache.filter((u) => u.bot).size, "bot")}`,
   (client: AkairoClient) =>
     `${pluralify(client.channels.cache.size, "channel")}`,
 ];

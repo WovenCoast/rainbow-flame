@@ -46,7 +46,7 @@ export default class OAuth2 {
       id: user.id,
       username: user.username,
       discriminator: user.discriminator,
-      avatar: user.avatar,
+      avatar: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`,
       admin: owners.includes(user.id),
       guilds: this.guilds[user.id].map(
         (guild): APIGuildMin => {
