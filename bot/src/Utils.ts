@@ -158,3 +158,22 @@ export function requireAuth(req: Request, res: Response, next: Function) {
     });
   next(req, res);
 }
+export default {
+  randomValue,
+  convertMs,
+  convertBytes,
+  convertDuration,
+  getRandom,
+  range,
+  titleCase,
+  pluralify,
+  trimArray,
+  sanitize,
+  delay,
+  exec,
+  shuffle,
+  chunk,
+  getSongs,
+  getBase64,
+  requireAuth,
+};
