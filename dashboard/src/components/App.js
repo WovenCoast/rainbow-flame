@@ -52,6 +52,9 @@ export default class App extends Component {
         <React.Fragment>
           <Router>
             <NavigationBar user={this.state.user} />
+
+            {/* Express style url params
+            In component, match `this.props.match.params` */}
           </Router>
         </React.Fragment>
       );
