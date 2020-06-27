@@ -47,7 +47,9 @@ export default class GitDocsCommand extends Command {
           "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
         )
         .setDescription(
-          `${removeHTMLTags(data.Abstract)}\n[Learn More](${data.AbstractURL})`
+          `${removeHTMLTags(
+            data.Abstract.replace(/(\<|\<\/)code\>/gi, "```")
+          )}\n\n[Learn More](${data.AbstractURL})`
         )
         .setFooter(
           "Powered by DuckDuckGo",
