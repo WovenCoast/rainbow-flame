@@ -1,6 +1,7 @@
 import { Command } from "discord-akairo";
 import { Message, MessageEmbed } from "discord.js";
 import { removeHTMLTags } from "../../Utils";
+import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
