@@ -4,15 +4,15 @@ import { removeHTMLTags } from "../../Utils";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
-export default class GitDocsCommand extends Command {
+export default class HtmlDocsCommand extends Command {
   public constructor() {
-    super("gitdocs", {
-      aliases: ["gitdocs", "git-docs", "git"],
+    super("htmldocs", {
+      aliases: ["htmldocs", "html-docs", "html"],
       category: "Docs",
       description: {
-        content: "Search for a git command",
-        usage: "gitdocs <query:string>",
-        examples: ["gitdocs branch"],
+        content: "Search for an html element",
+        usage: "htmldocs <query:string>",
+        examples: ["htmldocs div"],
       },
       ratelimit: 3,
       args: [
@@ -34,7 +34,7 @@ export default class GitDocsCommand extends Command {
   ): Promise<any> {
     const msg = await message.util.send(`${loading} Searching...`);
     const data = await this.client.apis.duckDuckGo.searchInstant(
-      `git ${query}`
+      `html ${query}`
     );
     if (!data || !data.AbstractURL.length || !data.Abstract.length)
       return msg.edit(`:x: No information found for query \`${query}\`.`);
@@ -43,8 +43,8 @@ export default class GitDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `Git (${data.AbstractSource})`,
-          "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
+          `HTML (${data.AbstractSource})`,
+          "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582748_960_720.png"
         )
         .setDescription(
           `${removeHTMLTags(
