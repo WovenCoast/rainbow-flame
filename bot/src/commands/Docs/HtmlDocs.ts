@@ -1,7 +1,7 @@
 import { Command } from "discord-akairo";
 import { Message, MessageEmbed } from "discord.js";
 import { removeHTMLTags } from "../../Utils";
-import * as _ from "lodash";
+import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
@@ -49,7 +49,7 @@ export default class HtmlDocsCommand extends Command {
         )
         .setDescription(
           `${removeHTMLTags(
-            _.unescape(data.Abstract.replace(/(\<|\<\/)code\>/gi, "```"))
+            he.decode(data.Abstract.replace(/(\<|\<\/)code\>/gi, "```")).trim()
           )} [Learn More](${data.AbstractURL})`
         )
         .setFooter(

@@ -48,7 +48,7 @@ export default class GitDocsCommand extends Command {
         )
         .setDescription(
           `${removeHTMLTags(
-            data.Abstract.replace(/(\<|\<\/)code\>/gi, "```")
+            data.Abstract.replace(/(\<|\<\/)code\>/gi, "```").trim()
           )} [Learn More](${data.AbstractURL})`
         )
         .setFooter(
