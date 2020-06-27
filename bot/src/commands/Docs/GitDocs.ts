@@ -49,7 +49,7 @@ export default class GitDocsCommand extends Command {
         .setDescription(
           `${removeHTMLTags(
             data.Abstract.replace(/(\<|\<\/)code\>/gi, "```")
-          )}\n\n[Learn More](${data.AbstractURL})`
+          )}\n[Learn More](${data.AbstractURL})`
         )
         .setFooter(
           "Powered by DuckDuckGo",
