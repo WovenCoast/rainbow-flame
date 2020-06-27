@@ -46,10 +46,8 @@ export class DuckDuckGoAPI {
         await axios.get(
           `https://api.duckduckgo.com/?${new URLSearchParams({
             t: "RainbowFlame Discord",
-            q: query.replace(/\s/gi, "+"),
             format: "json",
-            atb: "v208-1",
-          }).toString()}`
+          }).toString()}&atb=v208-1&q=${query.replace(/\s/gi, "+")}`
         )
       ).data;
     } catch (e) {
