@@ -48,9 +48,11 @@ export default class HtmlDocsCommand extends Command {
           "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582748_960_720.png"
         )
         .setDescription(
-          `${removeHTMLTags(
-            he.decode(data.Abstract.replace(/(\<|\<\/)code\>/gi, "```")).trim()
-          )} [Learn More](${data.AbstractURL})`
+          `${he
+            .decode(
+              removeHTMLTags(data.Abstract.replace(/(\<|\<\/)code\>/gi, "```"))
+            )
+            .trim()} [Learn More](${data.AbstractURL})`
         )
         .setFooter(
           "Powered by DuckDuckGo",
