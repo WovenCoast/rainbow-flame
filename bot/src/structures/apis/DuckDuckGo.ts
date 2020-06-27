@@ -42,14 +42,16 @@ export class DuckDuckGoAPI {
   }
   async searchInstant(query: string): Promise<InstantSearchResult | null> {
     try {
-      await axios.get(
-        `https://api.duckduckgo.com/?${new URLSearchParams({
-          t: "RainbowFlame Discord",
-          q: query.replace(/\s/gi, "+"),
-          format: "json",
-          atb: "v208-1",
-        }).toString()}`
-      );
+      return (
+        await axios.get(
+          `https://api.duckduckgo.com/?${new URLSearchParams({
+            t: "RainbowFlame Discord",
+            q: query.replace(/\s/gi, "+"),
+            format: "json",
+            atb: "v208-1",
+          }).toString()}`
+        )
+      ).data;
     } catch (e) {
       return null;
     }
