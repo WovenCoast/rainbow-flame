@@ -158,6 +158,9 @@ export function requireAuth(req: Request, res: Response, next: Function) {
     });
   next(req, res);
 }
+export function removeHTMLTags(html: string): string {
+  return html.replace(/<[^>]*>?/gm, "");
+}
 export default {
   randomValue,
   convertMs,
@@ -176,4 +179,5 @@ export default {
   getSongs,
   getBase64,
   requireAuth,
+  removeHTMLTags,
 };

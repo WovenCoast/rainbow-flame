@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import Discord, { Message, MessageEmbed } from "discord.js";
-import { performance } from "perf_hooks";
-import os from "os";
+import axios from "axios";
+import cheerio from "cheerio";
 import { colors } from "../../Config";
-import { pluralify, convertBytes } from "../../Utils";
+import { pluralify } from "../../Utils";
 
 export default class SupportCommand extends Command {
   public constructor() {
@@ -21,6 +21,13 @@ export default class SupportCommand extends Command {
   }
 
   public async exec(message: Message): Promise<Message> {
+    const patreons = parseInt(
+      cheerio
+        .load((await axios.get("https://patreon.com/rainbowflame")).data)(
+          "div.ZNIrZ>div:nth-child(1)>h2"
+        )
+        .text()
+    );
     return message.util.send(
       new MessageEmbed()
         .setColor(colors.info)
@@ -28,13 +35,20 @@ export default class SupportCommand extends Command {
         .setThumbnail(this.client.user.displayAvatarURL({ dynamic: true }))
         .setAuthor(`Help us out! | ${this.client.user.username}`)
         .setDescription(
-          `RainbowFlame is a project with ambitious goals in mind, being able to do pretty much everything and anything that you would want all in one bot.\nIf you want to support our initiative, we would love it if you could give us an upvote or send us a donation with or without patreon!`
+          `RainbowFlame is a project with ambitious goals in mind, being able to do pretty much everything and anything that you would want all in one bot.\nIf you want to support our initiative, we would love it if you could give us an upvote or pledge some amount on our patreon to keep our developers motivated and to maintain our hosting!`
         )
         .addField(
           "Votes",
           `[Vultrex](https://vultrex.co/bot/697333942306603078): **${pluralify(
             (await this.client.apis.vultrex.fetchVotes()).length,
             "vote"
+          )}**`
+        )
+        .addField(
+          "Donations",
+          `[Patreon](https://patreon.com/rainbowflame): **${pluralify(
+            patreons,
+            "patreon"
           )}**`
         )
     );

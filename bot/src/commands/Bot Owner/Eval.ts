@@ -86,6 +86,7 @@ export default class EvalCommand extends Command {
       const duration = performance.now() - start;
       const isURL = result.startsWith("http");
       return msg.edit(
+        `:white_check_mark: Successfully evaluated the code!`,
         embed
           .addField(
             "Output",
@@ -96,6 +97,7 @@ export default class EvalCommand extends Command {
     } catch (e) {
       const duration = performance.now() - start;
       return await msg.edit(
+        `:x: Something went wrong in evaluating the code...`,
         embed
           .setColor(colors.error)
           .addField("Error", `\`\`\`\n${e}\`\`\``)
