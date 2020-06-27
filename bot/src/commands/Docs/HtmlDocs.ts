@@ -50,7 +50,12 @@ export default class HtmlDocsCommand extends Command {
         .setDescription(
           `${he
             .decode(
-              removeHTMLTags(data.Abstract.replace(/(\<|\<\/)code\>/gi, "```"))
+              removeHTMLTags(
+                data.Abstract.replace(/\<code\>/gi, "```html\n").replace(
+                  /\<\/code\>/gi,
+                  "\n```"
+                )
+              )
             )
             .trim()} [Learn More](${data.AbstractURL})`
         )
