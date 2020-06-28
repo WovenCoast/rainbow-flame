@@ -13,7 +13,7 @@ export default class CssDocsCommand extends Command {
       description: {
         content: "Search for a css command",
         usage: "cssdocs <query:string>",
-        examples: ["cssdocs branch"],
+        examples: ["cssdocs color"],
       },
       ratelimit: 3,
       args: [

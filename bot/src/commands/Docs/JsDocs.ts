@@ -5,15 +5,15 @@ import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
-export default class DomDocsCommand extends Command {
+export default class JavascriptDocsCommand extends Command {
   public constructor() {
-    super("Domdocs", {
-      aliases: ["Domdocs", "Dom-docs", "Dom"],
+    super("javascriptdocs", {
+      aliases: ["javascriptdocs", "javascript-docs", "javascript", "js"],
       category: "Docs",
       description: {
-        content: "Search for a Dom command",
-        usage: "Domdocs <query:string>",
-        examples: ["Domdocs branch"],
+        content: "Search for a Javascript term",
+        usage: "javascriptdocs <query:string>",
+        examples: ["javascriptdocs tostring"],
       },
       ratelimit: 3,
       args: [
@@ -35,7 +35,7 @@ export default class DomDocsCommand extends Command {
   ): Promise<any> {
     const msg = await message.util.send(`${loading} Searching...`);
     const data = await this.client.apis.duckDuckGo.searchInstant(
-      `Dom ${query}`
+      `javascript ${query}`
     );
     if (!data || !data.AbstractURL.length || !data.Abstract.length)
       return msg.edit(`:x: No information found for query \`${query}\`.`);
@@ -44,8 +44,8 @@ export default class DomDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `Dom (${data.AbstractSource})`,
-          "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582747_960_720.png"
+          `javascript (${data.AbstractSource})`,
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTmJF7cfGQA0DijXhp7CV7SXQ5UmGRAaMgduA&usqp=CAU"
         )
         .setDescription(
           `${he
