@@ -11,9 +11,9 @@ export default class CssDocsCommand extends Command {
       aliases: ["cssdocs", "css-docs", "css"],
       category: "Docs",
       description: {
-        content: "Search for a css command",
+        content: "Search in the css documentation",
         usage: "cssdocs <query:string>",
-        examples: ["cssdocs branch"],
+        examples: ["cssdocs ::active"],
       },
       ratelimit: 3,
       args: [

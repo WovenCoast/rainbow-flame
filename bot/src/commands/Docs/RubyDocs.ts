@@ -5,15 +5,15 @@ import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
-export default class DomDocsCommand extends Command {
+export default class RubyDocsCommand extends Command {
   public constructor() {
-    super("Domdocs", {
-      aliases: ["Domdocs", "Dom-docs", "Dom"],
+    super("rubydocs", {
+      aliases: ["rubydocs", "ruby-docs", "ruby"],
       category: "Docs",
       description: {
-        content: "Search for a Dom command",
-        usage: "Domdocs <query:string>",
-        examples: ["Domdocs branch"],
+        content: "Search within the ruby documentation",
+        usage: "rubydocs <query:string>",
+        examples: ["rubydocs embedded ruby"],
       },
       ratelimit: 3,
       args: [
@@ -35,7 +35,7 @@ export default class DomDocsCommand extends Command {
   ): Promise<any> {
     const msg = await message.util.send(`${loading} Searching...`);
     const data = await this.client.apis.duckDuckGo.searchInstant(
-      `Dom ${query}`
+      `ruby on rails ${query}`
     );
     if (!data || !data.AbstractURL.length || !data.Abstract.length)
       return msg.edit(`:x: No information found for query \`${query}\`.`);
@@ -44,8 +44,8 @@ export default class DomDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `Dom (${data.AbstractSource})`,
-          "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582747_960_720.png"
+          `Ruby On Rails (${data.AbstractSource})`,
+          "https://duckduckgo.com/i/04e12505.png"
         )
         .setDescription(
           `${he
