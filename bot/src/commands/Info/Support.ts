@@ -2,7 +2,7 @@ import { Command } from "discord-akairo";
 import Discord, { Message, MessageEmbed } from "discord.js";
 import axios from "axios";
 import cheerio from "cheerio";
-import { colors } from "../../Config";
+import { colors, clientId } from "../../Config";
 import { pluralify } from "../../Utils";
 
 export default class SupportCommand extends Command {
@@ -50,6 +50,10 @@ export default class SupportCommand extends Command {
             patreons,
             "patreon"
           )}**`
+        )
+        .addField(
+          "Invites",
+          `[Bot Invite with no permissions](https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=0&scope=bot)\n[Server Invite](https://discord.gg/HwVsnDS)`
         )
     );
   }
