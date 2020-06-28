@@ -5,7 +5,7 @@ import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
-export default class GitDocsCommand extends Command {
+export default class CssDocsCommand extends Command {
   public constructor() {
     super("cssdocs", {
       aliases: ["cssdocs", "css-docs", "css"],
