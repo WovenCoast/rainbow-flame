@@ -5,15 +5,15 @@ import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
-export default class CssDocsCommand extends Command {
+export default class RubyDocsCommand extends Command {
   public constructor() {
-    super("cssdocs", {
-      aliases: ["cssdocs", "css-docs", "css"],
+    super("rubydocs", {
+      aliases: ["rubydocs", "ruby-docs", "ruby"],
       category: "Docs",
       description: {
-        content: "Search in the css documentation",
-        usage: "cssdocs <query:string>",
-        examples: ["cssdocs color"],
+        content: "Search within the ruby documentation",
+        usage: "rubydocs <query:string>",
+        examples: ["rubydocs embedded ruby"],
       },
       ratelimit: 3,
       args: [
@@ -35,7 +35,7 @@ export default class CssDocsCommand extends Command {
   ): Promise<any> {
     const msg = await message.util.send(`${loading} Searching...`);
     const data = await this.client.apis.duckDuckGo.searchInstant(
-      `css ${query}`
+      `ruby on rails ${query}`
     );
     if (!data || !data.AbstractURL.length || !data.Abstract.length)
       return msg.edit(`:x: No information found for query \`${query}\`.`);
@@ -44,8 +44,8 @@ export default class CssDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `CSS (${data.AbstractSource})`,
-          "https://en.wikipedia.org/wiki/File:CSS3_logo_and_wordmark.svg"
+          `Ruby On Rails (${data.AbstractSource})`,
+          "https://duckduckgo.com/i/04e12505.png"
         )
         .setDescription(
           `${he
