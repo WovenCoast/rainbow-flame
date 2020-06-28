@@ -7,13 +7,20 @@ import { colors } from "../../Config";
 
 export default class JavascriptDocsCommand extends Command {
   public constructor() {
-    super("javascriptdocs", {
-      aliases: ["javascriptdocs", "javascript-docs", "javascript", "js"],
+    super("jsdocs", {
+      aliases: [
+        "javascriptdocs",
+        "jsdocs",
+        "javascript-docs",
+        "js-docs",
+        "javascript",
+        "js",
+      ],
       category: "Docs",
       description: {
         content: "Search for a Javascript term",
-        usage: "javascriptdocs <query:string>",
-        examples: ["javascriptdocs tostring"],
+        usage: "jsdocs <query:string>",
+        examples: ["jsdocs tostring"],
       },
       ratelimit: 3,
       args: [
@@ -44,7 +51,7 @@ export default class JavascriptDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `javascript (${data.AbstractSource})`,
+          `JavaScript (${data.AbstractSource})`,
           "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTmJF7cfGQA0DijXhp7CV7SXQ5UmGRAaMgduA&usqp=CAU"
         )
         .setDescription(

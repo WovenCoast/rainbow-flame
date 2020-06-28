@@ -35,7 +35,7 @@ export default class RubyDocsCommand extends Command {
   ): Promise<any> {
     const msg = await message.util.send(`${loading} Searching...`);
     const data = await this.client.apis.duckDuckGo.searchInstant(
-      `ruby on rails ${query}`
+      `ruby ${query}`
     );
     if (!data || !data.AbstractURL.length || !data.Abstract.length)
       return msg.edit(`:x: No information found for query \`${query}\`.`);
