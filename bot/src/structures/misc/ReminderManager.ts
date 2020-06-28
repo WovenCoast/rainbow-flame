@@ -19,7 +19,7 @@ export default {
     if (!user) return;
     if (user.partial) user = await user.fetch();
 
-    const message = new MessageEmbed()
+    const embed = new MessageEmbed()
       .setColor(colors.primary)
       .setDescription(
         `${user.tag} wanted me to remind you to **${reminder.content}**.`
@@ -31,12 +31,21 @@ export default {
       reminder.channel
     ) as TextChannel;
     if (!channel) {
-      user.send(message);
+      user.send(
+        `<@${user.id}> just a small reminder to **${reminder.content}**`,
+        embed
+      );
+      return;
+    } else {
+      channel.send(
+        `<@${user.id}> just a small reminder to **${reminder.content}**`,
+        embed
+      );
+      user.send(
+        `<@${user.id}> just a small reminder to **${reminder.content}**`,
+        embed
+      );
       return;
     }
-    channel.send(
-      `<@${user.id}> just a small reminder to **${reminder.content}**`,
-      message
-    );
   },
 };

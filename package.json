@@ -55,6 +55,7 @@
     "sqlite3": "^4.2.0",
     "tinyurl": "^1.1.6",
     "typeorm": "^0.2.25",
+    "urban": "^0.3.2",
     "vultrex.api": "^2.0.1",
     "yt-search": "^1.1.2",
     "ytdl-core": "^2.1.7"

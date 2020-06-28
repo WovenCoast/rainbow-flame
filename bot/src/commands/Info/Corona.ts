@@ -2,6 +2,7 @@ import { Command } from "discord-akairo";
 import { Message, MessageEmbed } from "discord.js";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
+import { pluralify } from "../../Utils";
 
 export default class CoronaCommand extends Command {
   constructor() {
@@ -41,10 +42,10 @@ export default class CoronaCommand extends Command {
           "Location:",
           `${data.countryInfo.lat} Lat | ${data.countryInfo.long} Long`
         )
-        .addField("Cases", data.cases, true)
-        .addField("Active Cases", data.active, true)
-        .addField("Critical Cases", data.critical, true)
-        .addField("Tests", data.tests || "Unknown", true)
+        .addField("Cases", pluralify(data.cases, "case"), true)
+        .addField("Active Cases", pluralify(data.active, "case"), true)
+        .addField("Critical Cases", pluralify(data.critical, "case"), true)
+        .addField("Tests", pluralify(data.tests, "test"), true)
         .addField(
           "Positive Tests Rate",
           data.tests == 0
@@ -52,23 +53,23 @@ export default class CoronaCommand extends Command {
             : `${(data.tests / data.cases).toFixed(2)}%`,
           true
         )
-        .addField("Deaths", data.deaths, true)
-        .addField("Cases Today", data.todayCases, true)
-        .addField("Deaths Today", data.todayDeaths, true)
-        .addField("Recovered", data.recovered, true)
+        .addField("Deaths", pluralify(data.deaths, "death"), true)
+        .addField("Cases Today", pluralify(data.todayCases, "case"), true)
+        .addField("Deaths Today", pluralify(data.todayDeaths, "death"), true)
+        .addField("Recovered", pluralify(data.recovered, "case"), true)
         .addField(
           "Cases Per Million",
-          data.casesPerOneMillion || "Unknown",
+          pluralify(Math.round(data.casesPerOneMillion), "case"),
           true
         )
         .addField(
           "Deaths Per Million",
-          data.deathsPerOneMillion || "Unknown",
+          pluralify(Math.round(data.deathsPerOneMillion), "death"),
           true
         )
         .addField(
           "Tests Per Million",
-          data.testsPerOneMillion || "Unknown",
+          pluralify(Math.round(data.testsPerOneMillion), "test"),
           true
         )
         .setFooter(`Last Updated: ${data.updated.format("DD/MMM/YYYY hh:mm")}`)
