@@ -25,4 +25,6 @@ export default class UrbanCommand extends Command {
       ],
     });
   }
+
+  async exec(message: Message, { word }: { word: string }) {}
 }

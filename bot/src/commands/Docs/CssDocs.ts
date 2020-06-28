@@ -7,7 +7,7 @@ import { colors } from "../../Config";
 
 export default class GitDocsCommand extends Command {
   public constructor() {
-    super("gitdocs", {
+    super("cssdocs", {
       aliases: ["cssdocs", "css-docs", "css"],
       category: "Docs",
       description: {
@@ -44,8 +44,8 @@ export default class GitDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `Git (${data.AbstractSource})`,
-          "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582747_960_720.png"
+          `CSS (${data.AbstractSource})`,
+          "https://en.wikipedia.org/wiki/File:CSS3_logo_and_wordmark.svg"
         )
         .setDescription(
           `${he
