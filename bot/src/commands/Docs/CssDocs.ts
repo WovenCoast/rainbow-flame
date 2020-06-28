@@ -5,9 +5,9 @@ import he from "he";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
 
-export default class GitDocsCommand extends Command {
+export default class CssDocsCommand extends Command {
   public constructor() {
-    super("gitdocs", {
+    super("cssdocs", {
       aliases: ["cssdocs", "css-docs", "css"],
       category: "Docs",
       description: {
@@ -44,7 +44,7 @@ export default class GitDocsCommand extends Command {
       new MessageEmbed()
         .setColor(colors.info)
         .setAuthor(
-          `Git (${data.AbstractSource})`,
+          `Css (${data.AbstractSource})`,
           "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582747_960_720.png"
         )
         .setDescription(
