@@ -29,11 +29,9 @@ export default class PollCommand extends Command {
           },
         },
         {
-          //   id: "itemString",
-          id: "items",
+          id: "itemString",
           type: "string",
-          //   match: "rest",
-          match: "separate",
+          match: "rest",
           prompt: {
             start: (msg: Message) =>
               `you need to provide items for the poll! (Separate multiple items with commas)`,
@@ -46,14 +44,13 @@ export default class PollCommand extends Command {
 
   public async exec(
     message: Message,
-    // { question, itemString }: { question: string; itemString: string }
-    { question, items }: { question: string; items: string[] }
+    { question, itemString }: { question: string; itemString: string }
   ): Promise<any> {
-    // const items = itemString.split(",").map((e) => e.trim());
-    // if (items.length === 1)
-    //   return message.util.send(
-    //     `:x: \`${itemString}\` has only one item in it! Use \`,\` to separate multiple items!`
-    //   );
+    const items = itemString.split(",").map((e) => e.trim());
+    if (items.length === 1)
+      return message.util.send(
+        `:x: \`${itemString}\` has only one item in it! Use \`,\` to separate multiple items!`
+      );
     if (items.length >= 10)
       return message.util.send(`:x: Maximum 10 items are allowed in a poll!`);
     if (

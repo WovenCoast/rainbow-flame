@@ -1,7 +1,7 @@
 import { Listener, AkairoClient } from "discord-akairo";
 import { TextChannel, Message } from "discord.js";
 import { FlameConsole } from "../../structures/Console";
-import { getRandom, pluralify } from "../../Utils";
+import { getRandom, pluralify, convertMs } from "../../Utils";
 import { debug, prefix } from "../../Config";
 import API from "../../api/API";
 
@@ -39,6 +39,7 @@ export default class ReadyListener extends Listener {
     if (!debug) {
       setInterval(() => {
         this.currentStatus++;
+        this.currentStatus = this.currentStatus % statuses.length;
         this.client.user.setPresence({
           status: statuses[this.currentStatus] as "online" | "idle" | "dnd",
           activity: {
@@ -47,6 +48,30 @@ export default class ReadyListener extends Listener {
           },
         });
       }, 15e3);
+    }
+    // Restart invoked by owner
+    if (this.client.settings.get(null, "restart.invoked", false) === true) {
+      this.client.settings.set(null, "restart.invoked", false);
+      const timestampStart: number = this.client.settings.get(
+        null,
+        "restart.timestamp",
+        null
+      );
+      this.client.settings.set(null, "restart.timestamp", null);
+      const channel: TextChannel = (await this.client.channels.fetch(
+        this.client.settings.get(null, "restart.channel", null)
+      )) as TextChannel;
+      this.client.settings.set(null, "restart.channel", null);
+      const message: Message = await channel.messages.fetch(
+        this.client.settings.get(null, "restart.message", null)
+      );
+      this.client.settings.set(null, "restart.message", null);
+      const timestamp = Date.now() - timestampStart;
+      await message.edit(
+        `:white_check_mark: Successfully restarted the bot in **${convertMs(
+          timestamp
+        )}**!`
+      );
     }
     // API
     new API(this.client).start();
