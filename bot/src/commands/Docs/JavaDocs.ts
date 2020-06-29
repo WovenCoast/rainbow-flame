@@ -45,7 +45,7 @@ export default class JavaDocsCommand extends Command {
         .setColor(colors.info)
         .setAuthor(
           `Java (${data.AbstractSource})`,
-          "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582748_960_720.png"
+          "https://banner2.cleanpng.com/20180805/iot/kisspng-logo-java-runtime-environment-programming-language-java-util-concurrentmodificationexception-Ömer-5b6766ab2d98b8.1809687115335031471868.jpg"
         )
         .setDescription(
           `${he
