@@ -44,6 +44,7 @@
     "he": "^1.2.0",
     "lavaclient": "^2.0.6",
     "lavacord": "^1.1.9",
+    "mathjs": "^7.0.2",
     "mdbreact": "^4.27.0",
     "moment": "^2.27.0",
     "ms": "^2.1.2",
@@ -54,8 +55,9 @@
     "sqlite": "^4.0.7",
     "sqlite3": "^4.2.0",
     "tinyurl": "^1.1.6",
+    "ts-node-dev": "^1.0.0-pre.50",
     "typeorm": "^0.2.25",
-    "urban": "^0.3.2",
+    "typescript": "^3.9.6",
     "vultrex.api": "^2.0.1",
     "yt-search": "^1.1.2",
     "ytdl-core": "^2.1.7"

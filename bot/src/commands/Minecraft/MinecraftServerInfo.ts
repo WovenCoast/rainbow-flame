@@ -4,6 +4,7 @@ import { performance } from "perf_hooks";
 import { convertMs, pluralify } from "../../Utils";
 import { loading } from "../../Emojis";
 import { colors } from "../../Config";
+import { MessageAttachment } from "discord.js";
 
 export default class MinecraftServerInfo extends Command {
   public constructor() {
@@ -70,6 +71,9 @@ export default class MinecraftServerInfo extends Command {
         .addField(
           "MOTD (Message Of The Day)",
           `\`\`\`\n${serverInfo.motd}\`\`\``
+        )
+        .setImage(
+          `http://status.mclive.eu/${server}/${serverInfo.host}/${serverInfo.port}/banner.png`
         )
         .setFooter(`Fetched information in ${convertMs(requestTime)}`)
     );
