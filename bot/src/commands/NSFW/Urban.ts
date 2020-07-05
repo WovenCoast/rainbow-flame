@@ -1,5 +1,5 @@
 import { Command } from "discord-akairo";
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed, TextChannel } from "discord.js";
 import { colors } from "../../Config";
 import { loading } from "../../Emojis";
 
@@ -29,6 +29,10 @@ export default class UrbanCommand extends Command {
   }
 
   async exec(message: Message, { word }: { word: string }) {
+    if (!(message.channel as TextChannel).nsfw)
+      return message.util.send(
+        `:octagonal_sign: This command works only in NSFW channels!`
+      );
     const msg = await message.util.send(`${loading} Searching...`);
     const words = await this.client.apis.urban.getWordInfo(word);
     if (!words[0])
