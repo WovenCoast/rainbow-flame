@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AkairoClient } from "discord-akairo";
+import { number } from "prop-types";
 
 interface PlayerInfo {
   error: boolean;
@@ -21,6 +22,8 @@ interface ServerInfo {
   type?: string;
   motd?: string;
   icon?: string;
+  host?: string;
+  port?: number;
 }
 export class MinecraftAPI {
   client: AkairoClient;
@@ -69,6 +72,8 @@ export class MinecraftAPI {
         maxPlayers: res.players.max,
         onlinePlayers: res.players.now,
         online: res.online,
+        port,
+        host,
       };
     } catch (e) {
       res = e.response.data;

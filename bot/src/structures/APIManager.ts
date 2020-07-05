@@ -6,6 +6,7 @@ import { MinecraftAPI } from "./apis/Minecraft";
 import { RadioGardenAPI } from "./apis/RadioGarden";
 import { CoronaAPI } from "./apis/Corona";
 import { DuckDuckGoAPI } from "./apis/DuckDuckGo";
+import { UrbanAPI } from "./apis/Urban";
 
 export class APIManager {
   client: AkairoClient;
@@ -15,6 +16,7 @@ export class APIManager {
   vultrex: VultrexAPI;
   corona: CoronaAPI;
   duckDuckGo: DuckDuckGoAPI;
+  urban: UrbanAPI;
   constructor(client: AkairoClient) {
     this.client = client;
     this.hastebin = new HasteAPI(client);
@@ -23,6 +25,7 @@ export class APIManager {
     this.vultrex = new VultrexAPI(client, process.env.VULTREX_TOKEN);
     this.corona = new CoronaAPI(client);
     this.duckDuckGo = new DuckDuckGoAPI(client);
+    this.urban = new UrbanAPI(client);
   }
   public async postServerCount() {
     if (!this.client.user) {
