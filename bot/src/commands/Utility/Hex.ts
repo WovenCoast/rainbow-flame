@@ -34,7 +34,7 @@ export default class HexCommand extends Command {
     if (s.length === 3) s = [...s].map((x) => x + x).join('');
     return message.util.send(
       new MessageEmbed()
-        .setColor(colors.success)
+        .setColor('#' + s)
         .setTitle('#' + s)
         .setThumbnail(`https://via.placeholder.com/150/${s}?text=+`)
         .addField(
