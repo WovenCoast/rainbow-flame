@@ -35,7 +35,7 @@ export default class ExecCommand extends Command {
     message: Message,
     { input }: { input: string }
   ): Promise<any> {
-    const hastebin = "https://haste.wovencoast.me/";
+    const hastebin = "https://https://hastebin.com/";
     const start = performance.now();
     try {
       let result: any = exec(input);
