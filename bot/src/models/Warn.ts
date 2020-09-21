@@ -6,17 +6,14 @@ export class Warn {
   id!: number;
 
   @Column({ type: "varchar", length: 22 })
-  guild: string;
+  guild!: string;
 
   @Column({ type: "varchar", length: 22 })
-  user: string;
+  user!: string;
 
   @Column({ type: "varchar", length: 22 })
-  moderator: string;
-
-  @Column({ type: "integer" })
-  time: number;
+  moderator!: string;
 
   @Column({ type: "text" })
-  reason: string;
+  reason!: string;
 }
