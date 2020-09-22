@@ -1,19 +1,20 @@
 import { Listener } from "discord-akairo";
 import { GuildMember, TextChannel, MessageEmbed } from "discord.js";
-import { getRandom } from "../../Utils";
-import { colors } from "../../Config";
+import { getRandom, pluralify } from "../../../Utils";
+import { colors } from "../../../Config";
 
-export default class MemberJoinedListener extends Listener {
+export default class MemberLeftListener extends Listener {
   constructor() {
-    super("memberJoined", {
+    super("memberLeft", {
       emitter: "client",
-      event: "guildMemberAdd",
+      event: "guildMemberRemove",
       category: "client",
     });
   }
 
   public async exec(member: GuildMember) {
-    console.log("discord.js", "{user} joined {guild}", {
+    // tslint:disable-next-line: no-console
+    console.log("discord.js", "{user} left {guild}", {
       user: member.user.tag,
       guild: member.guild.name,
     });
@@ -31,13 +32,17 @@ export default class MemberJoinedListener extends Listener {
       if (!channel) return;
       (channel as TextChannel).send(
         new MessageEmbed()
-          .setColor(colors.info)
+          .setColor(colors.error)
           .setFooter(
-            `In other words, welcome to ${member.guild.name}! You are the ${member.guild.memberCount}th member!\nAccount created at`
+            `In other words, good bye ${member.user.tag
+            }! Now there's only ${pluralify(
+              member.guild.memberCount,
+              "member"
+            )} to enjoy ${member.guild.name}.\nAccount created at`
           )
           .setTimestamp(member.user.createdTimestamp)
           .setAuthor(
-            `Member Joined | ${member.guild.name}`,
+            `Member Left | ${member.guild.name}`,
             member.guild.iconURL({ dynamic: true })
           )
           .setDescription(

@@ -1,9 +1,9 @@
 import { Listener } from "discord-akairo";
 import { Message } from "discord.js";
-import { prefix } from "../../Config";
-import { Rank } from "../../models/Rank";
+import { prefix } from "../../../Config";
+import { Rank } from "../../../models/Rank";
 import { Repository } from "typeorm";
-import { randomValue } from "../../Utils";
+import { randomValue } from "../../../Utils";
 
 export default class RankListener extends Listener {
   constructor() {
@@ -67,6 +67,7 @@ export default class RankListener extends Listener {
             "{user}, you just levelled upto **level {level}**!"
           ) as string).replace(
             /{(.*)}/gi,
+            // tslint:disable-next-line: variable-name
             (match, property, offset, string) => properties[property]
           )
         );

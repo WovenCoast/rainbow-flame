@@ -1,6 +1,6 @@
 import { Listener, AkairoClient } from "discord-akairo";
 import { Message } from "discord.js";
-import { prefix } from "../../Config";
+import { prefix } from "../../../Config";
 
 export default class FancyMentionListener extends Listener {
   constructor() {

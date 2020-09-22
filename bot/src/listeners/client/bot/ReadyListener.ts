@@ -1,15 +1,15 @@
 import { Listener, AkairoClient } from "discord-akairo";
 import { TextChannel, Message } from "discord.js";
-import { FlameConsole } from "../../structures/Console";
-import { getRandom, pluralify, convertMs } from "../../Utils";
-import { debug, prefix } from "../../Config";
-import API from "../../api/API";
+import { FlameConsole } from "../../../structures/Console";
+import { getRandom, pluralify, convertMs } from "../../../Utils";
+import { debug, prefix } from "../../../Config";
+import API from "../../../api/API";
 
 import { Repository } from "typeorm";
-import ReminderManager from "../../structures/misc/ReminderManager";
-import { Reminder } from "../../models/Reminder";
-import GiveawayManager from "../../structures/misc/GiveawayManager";
-import { Giveaway } from "../../models/Giveaway";
+import ReminderManager from "../../../structures/misc/ReminderManager";
+import { Reminder } from "../../../models/Reminder";
+import GiveawayManager from "../../../structures/misc/GiveawayManager";
+import { Giveaway } from "../../../models/Giveaway";
 
 const statuses = ["online", "idle", "dnd"];
 const presences = [
