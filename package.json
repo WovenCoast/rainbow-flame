@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/WovenCoast/rainbow-flame#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "@lavacord/discord.js": "0.0.7",
     "@types/cheerio": "^0.22.18",
     "@types/express": "^4.17.6",
@@ -41,6 +42,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "got": "^11.7.0",
     "he": "^1.2.0",
     "lavaclient": "^2.0.6",
     "lavacord": "^1.1.9",
