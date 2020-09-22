@@ -42,7 +42,7 @@ export default class InfractionCommand extends Command {
                 index: i + 1,
                 moderator: mod.tag,
                 reason: wn.reason
-            }
+            };
         }));
 
         return msg.edit(`:white_check_mark: Found infractions from \`${member.user.tag}\``, new MessageEmbed()
