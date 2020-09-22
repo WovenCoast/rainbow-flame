@@ -2,7 +2,7 @@ import { Command } from "discord-akairo";
 import Discord, { Message, MessageEmbed } from "discord.js";
 import axios from "axios";
 import cheerio from "cheerio";
-import { colors, clientId } from "../../Config";
+import { colors } from "../../Config";
 import { pluralify } from "../../Utils";
 
 export default class SupportCommand extends Command {
@@ -21,6 +21,7 @@ export default class SupportCommand extends Command {
   }
 
   public async exec(message: Message): Promise<Message> {
+    // tslint:disable-next-line: radix
     const patreons = parseInt(
       cheerio
         .load((await axios.get("https://patreon.com/rainbowflame")).data)(
@@ -39,7 +40,7 @@ export default class SupportCommand extends Command {
         )
         .addField(
           "Votes",
-          `[Vultrex](https://vultrex.co/bot/697333942306603078): **${pluralify(
+          `[Vultrex](https://discordbots.co/bot/697333942306603078): **${pluralify(
             (await this.client.apis.vultrex.fetchVotes()).length,
             "vote"
           )}**`
@@ -53,7 +54,7 @@ export default class SupportCommand extends Command {
         )
         .addField(
           "Invites",
-          `[Bot Invite with no permissions](https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=0&scope=bot)\n[Server Invite](https://discord.gg/HwVsnDS)`
+          `[Bot Invite with no permissions](https://discord.com/oauth2/authorize?client_id=${this.client.user.id}&permissions=0&scope=bot)\n[Server Invite](https://discord.gg/HwVsnDS)`
         )
     );
   }

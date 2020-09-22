@@ -101,6 +101,7 @@ export default class BotClient extends AkairoClient {
       otherwise: "",
     },
     ignorePermissions: owners,
+    ignoreCooldown: owners,
   });
 
   public constructor(config: BotOptions) {

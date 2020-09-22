@@ -58,7 +58,7 @@ export default class BotStatsCommand extends Command {
         )
         .addField(
           "Votes",
-          `[Vultrex](https://vultrex.io/bot/697333942306603078): **${pluralify(
+          `[Vultrex](https://discordbots.co/bot/697333942306603078): **${pluralify(
             (await this.client.apis.vultrex.fetchVotes()).length,
             "vote"
           )}**`
