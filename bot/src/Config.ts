@@ -19,7 +19,11 @@ export let callbackUrl: string = debug
 export let redirectUri: string = debug
   ? "http://localhost:5432/"
   : "https://dash.rainbowflame.quniverse.xyz/";
-export let owners: string[] = ["502446928303226890", "511518299201470465"];
+export let owners: string[] = [
+  "502446928303226890",
+  "511518299201470465",
+  "633191338233561110",
+];
 export let dbName: string = "FlameDB";
 export let lavalink: LavalinkNodeOptions = {
   id: "main",
