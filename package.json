@@ -8,7 +8,9 @@
     "start": "node bot/dist/Bot.js",
     "start:dev": "ts-node-dev --poll -- ./bot/src/Bot.ts",
     "start:lavalink": "cd ./lavalink && ./lavalink.sh",
-    "start:dashboard": "cd ./dashboard && npm start"
+    "start:dashboard": "cd ./dashboard && npm start",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -62,6 +64,8 @@
     "typescript": "^3.9.6",
     "vultrex.api": "^2.0.1",
     "yt-search": "^1.1.2",
-    "ytdl-core": "^2.1.7"
-  }
+    "ytdl-core": "^2.1.7",
+    "@snyk/protect": "latest"
+  },
+  "snyk": true
 }
