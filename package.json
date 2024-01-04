@@ -58,7 +58,7 @@
     "sqlite3": "^4.2.0",
     "tinyurl": "^1.1.6",
     "ts-node-dev": "^1.0.0-pre.50",
-    "typeorm": "^0.2.25",
+    "typeorm": "^0.3.18",
     "typescript": "^3.9.6",
     "vultrex.api": "^2.0.1",
     "yt-search": "^1.1.2",
